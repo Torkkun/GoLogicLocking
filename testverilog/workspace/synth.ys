@@ -1,0 +1,4 @@
+read -sv addveri/add.v
+hierarchy -top muladd
+proc; opt; techmap; opt
+write_verilog -noattr addsysd.v
