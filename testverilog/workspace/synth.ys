@@ -1,4 +1,4 @@
-read -sv addveri/add.v
-hierarchy -top muladd
+read -sv ltika2/ltika2.v
+hierarchy -top blink
 proc; opt; techmap; opt
-write_verilog -noattr addsysd.v
+write_verilog -noattr ltika2/ltika2_yoshnthd.v
