@@ -1,7 +1,9 @@
 package parser
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestParse(t *testing.T) {
-
+	NewParse()
 }

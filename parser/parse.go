@@ -1,52 +1,12 @@
 package parser
 
 import (
+	"bufio"
+	"fmt"
 	"log"
+	"strconv"
 	"strings"
 )
-
-type Source struct {
-	Description
-}
-
-type Description struct {
-	ModuleDef interface{}
-}
-
-type Paramlist struct{}
-
-type Portlist struct {
-	Port
-}
-
-type Port struct {
-	Name string
-	// Noneになっているのがわからない
-}
-
-type Wire struct {
-	Name string
-	// Falseになっているのがわからない
-}
-
-type Input struct {
-	Name string
-	// Falseになっているのがわからない
-}
-
-type Output struct {
-	Name string
-	// Falseになっているのがわからない
-}
-
-type Assign struct {
-	Lvalue interface{}
-	Rvalue interface{}
-}
-
-type Identifier struct {
-	Name string
-}
 
 type GateType int
 
@@ -57,10 +17,17 @@ const (
 	Or
 )
 
-// テスト
-type At int
+type prevType int
 
-var TestMap map[At][]Node
+const (
+	_ prevType = iota
+	Lvalue
+	Rvalue
+	Gate
+)
+
+// テスト
+// var TestMap map[int]Node
 var PortList []string
 
 type Node struct {
@@ -70,44 +37,145 @@ type Node struct {
 	Out  string
 }
 
-func NewParse() {
+func NewParse() map[int]Node {
 	file := NewReader("test.txt")
 	scanner := NewScanner(file)
+	// test
+	TestMap := map[int]Node{}
+	var pt prevType
+
 	for scanner.Scan() {
 		txt := scanner.Text()
 		strline := strings.Fields(txt)
 
 		switch strline[0] {
 		case "Assign:":
-			assignwidth := strings.Fields(strline[1])
-			from := assignwidth[1]
-			to := assignwidth[3]
-			if from != to[:len(to)-1] {
-				// 一次的にこうする　もしかしたらAssignでto, fromが複数もあるかもしれない
-				log.Fatalf("from and to not equal Error: from:%s, to:%s", from, to)
+			nextstr := deparseStr(strline[1:])
+			from, to, err := parseFromTo(nextstr)
+			if err != nil {
+				log.Fatalln(err)
 			}
+			if from != to {
+				log.Fatalln("Assign width is not one")
+			}
+
 		case "Lvalue:":
+			nextstr := deparseStr(strline[1:])
+			at, err := parseAt(nextstr)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			TestMap[at] = Node{}
+			pt = Lvalue
 
 		case "Rvalue:":
+			// peek scan
+			strline := peekScan(scanner)
+			// ゲートが来るのを期待
+			nextstr := deparseStr(strline[1:])
+			at, err := parseAt(nextstr)
+			if err != nil {
+				log.Fatalln(err)
+			}
+			mapval := TestMap[at]
+			mapval.Gate, err = parseGate(strline[0])
+			if err != nil {
+				log.Fatalln(err)
+			}
+			TestMap[at] = mapval
+			pt = Gate
+
 		case "Identifier:":
+			switch pt {
+			case Lvalue:
+				nextstr := deparseStr(strline[2:])
+				at, err := parseAt(nextstr)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				mapval := TestMap[at]
+				mapval.Out = strline[1]
+				TestMap[at] = mapval
 
-		case "Xor:":
-
-		case "And:":
-		case "Or:":
+			case Gate:
+				nextstr := deparseStr(strline[2:])
+				at, err := parseAt(nextstr)
+				if err != nil {
+					log.Fatalln(err)
+				}
+				mapval := TestMap[at]
+				mapval.In1 = strline[1]
+				strline := peekScan(scanner)
+				mapval.In2 = strline[1]
+				TestMap[at] = mapval
+			}
 
 		default:
+			// ひとまず考えない部分はスキップ
 			continue
 		}
 	}
+	return TestMap
+
 }
 
-// (from N to N)をパースしてNを取得
-func parseFromTo() {
+// (from N to N)をパースしてfromとtoを取得
+func parseFromTo(str string) (int, int, error) {
+	str = strings.Replace(str, "(", "", -1)
+	str = strings.Replace(str, ")", "", -1)
+	splitstr := strings.Fields(str)
 
+	from, err := strconv.Atoi(splitstr[1])
+	if err != nil {
+		log.Fatalln(splitstr)
+		return -1, -1, err
+	}
+	to, err := strconv.Atoi(splitstr[3])
+	if err != nil {
+		return -1, -1, err
+	}
+
+	return from, to, nil
 }
 
 // (at N)をパースしてNを取得
-func parseAt() {
+func parseAt(str string) (int, error) {
+	str = strings.Replace(str, "(", "", -1)
+	str = strings.Replace(str, ")", "", -1)
+	splitstr := strings.Fields(str)
 
+	at, err := strconv.Atoi(splitstr[1])
+	if err != nil {
+		return -1, err
+	}
+	return at, nil
+}
+
+func parseGate(str string) (GateType, error) {
+	splitstr := strings.Fields(str)
+
+	gate := splitstr[0]
+	switch gate {
+	case "Xor:":
+		return Xor, nil
+	case "Or:":
+		return Or, nil
+	case "And:":
+		return And, nil
+	default:
+		return 0, fmt.Errorf("GateType is not implementence: %s", gate)
+	}
+
+}
+
+func deparseStr(strarry []string) string {
+	tmpstr := strings.Join(strarry, " ")
+	return tmpstr
+}
+
+func peekScan(scanner *bufio.Scanner) []string {
+	scanner.Scan()
+	txt := scanner.Text()
+	strline := strings.Fields(txt)
+	return strline
 }
