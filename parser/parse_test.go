@@ -7,5 +7,7 @@ import (
 
 func TestParse(t *testing.T) {
 	parsed := NewParse()
-	fmt.Println(parsed)
+	fmt.Println(parsed.Nodes)
+	fmt.Println(parsed.Declaration.IOPorts)
+	fmt.Println(parsed.Declaration.Wires)
 }

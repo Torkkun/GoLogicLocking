@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -26,10 +27,6 @@ const (
 	Gate
 )
 
-// テスト
-// var TestMap map[int]Node
-var PortList []string
-
 type Node struct {
 	In1  string
 	In2  string
@@ -37,11 +34,28 @@ type Node struct {
 	Out  string
 }
 
-func NewParse() map[int]Node {
+type Decl struct {
+	IOPorts *[]IOPort
+	Wires   *[]Wire
+}
+
+type ParseResult struct {
+	Nodes       map[int]Node
+	Declaration *Decl
+}
+
+func NewParse() ParseResult {
 	file := NewReader("test.txt")
 	scanner := NewScanner(file)
-	// test
-	TestMap := map[int]Node{}
+	// Nodes
+	newNodes := map[int]Node{}
+	// Declsetup
+	newDecl := new(Decl)
+	newDecl.IOPorts = new([]IOPort)
+	newDecl.Wires = new([]Wire)
+
+	ioportlist := []string{} //このリストをもとにWireのIOを除外するかどうか決める
+
 	var pt prevType
 
 	for scanner.Scan() {
@@ -49,6 +63,22 @@ func NewParse() map[int]Node {
 		strline := strings.Fields(txt)
 
 		switch strline[0] {
+		case "Portlist:":
+			// 次の値を取得
+			strline = peekScan(scanner)
+			isPort := strline[0]
+			for isPort == "Port:" {
+				portname := strline[1]
+				portname = removechar(portname)
+				ioportlist = append(ioportlist, portname)
+				// 次の値を取得して更新
+				strline = peekScan(scanner)
+				isPort = strline[0]
+			}
+		case "Decl:":
+			strline = peekScan(scanner)
+			newDecl.parseIOPortlist(strline, ioportlist)
+
 		case "Assign:":
 			nextstr := deparseStr(strline[1:])
 			from, to, err := parseFromTo(nextstr)
@@ -65,7 +95,7 @@ func NewParse() map[int]Node {
 			if err != nil {
 				log.Fatalln(err)
 			}
-			TestMap[at] = Node{}
+			newNodes[at] = Node{}
 			pt = Lvalue
 
 		case "Rvalue:":
@@ -77,12 +107,12 @@ func NewParse() map[int]Node {
 			if err != nil {
 				log.Fatalln(err)
 			}
-			mapval := TestMap[at]
+			mapval := newNodes[at]
 			mapval.Gate, err = parseGate(strline[0])
 			if err != nil {
 				log.Fatalln(err)
 			}
-			TestMap[at] = mapval
+			newNodes[at] = mapval
 			pt = Gate
 
 		case "Identifier:":
@@ -93,9 +123,9 @@ func NewParse() map[int]Node {
 				if err != nil {
 					log.Fatalln(err)
 				}
-				mapval := TestMap[at]
+				mapval := newNodes[at]
 				mapval.Out = strline[1]
-				TestMap[at] = mapval
+				newNodes[at] = mapval
 
 			case Gate:
 				nextstr := deparseStr(strline[2:])
@@ -103,11 +133,11 @@ func NewParse() map[int]Node {
 				if err != nil {
 					log.Fatalln(err)
 				}
-				mapval := TestMap[at]
+				mapval := newNodes[at]
 				mapval.In1 = strline[1]
 				strline := peekScan(scanner)
 				mapval.In2 = strline[1]
-				TestMap[at] = mapval
+				newNodes[at] = mapval
 			}
 
 		default:
@@ -115,8 +145,53 @@ func NewParse() map[int]Node {
 			continue
 		}
 	}
-	return TestMap
+	return ParseResult{
+		Nodes:       newNodes,
+		Declaration: newDecl,
+	}
 
+}
+
+type IOPortType string
+
+const (
+	IN  IOPortType = "IN"
+	OUT IOPortType = "OUT"
+)
+
+type IOPort struct {
+	Type IOPortType
+	Name string
+}
+
+type Wire struct {
+	Name string
+}
+
+func (d Decl) parseIOPortlist(declstr []string, list []string) error {
+	declType := declstr[0]
+	switch declType {
+	case "Wire:":
+		name := declstr[1]
+		name = removechar(name)
+		if !slices.Contains(list, name) {
+			*d.Wires = append(*d.Wires, Wire{Name: name})
+		}
+		// なかったら何もせずスキップ
+
+	case "Input:":
+		name := declstr[1]
+		name = removechar(name)
+		*d.IOPorts = append(*d.IOPorts, IOPort{Type: IN, Name: name})
+
+	case "Output:":
+		name := declstr[1]
+		name = removechar(name)
+		*d.IOPorts = append(*d.IOPorts, IOPort{Type: OUT, Name: name})
+	default:
+		return fmt.Errorf("decl is not recognize %s", declType)
+	}
+	return nil
 }
 
 // (from N to N)をパースしてfromとtoを取得
@@ -165,7 +240,6 @@ func parseGate(str string) (GateType, error) {
 	default:
 		return 0, fmt.Errorf("GateType is not implementence: %s", gate)
 	}
-
 }
 
 func deparseStr(strarry []string) string {
@@ -178,4 +252,10 @@ func peekScan(scanner *bufio.Scanner) []string {
 	txt := scanner.Text()
 	strline := strings.Fields(txt)
 	return strline
+}
+
+// パース時に出てくる不必要な文字を除去する
+func removechar(str string) string {
+	// とりあえず　,　だけ
+	return strings.Replace(str, ",", "", -1)
 }
