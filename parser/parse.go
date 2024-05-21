@@ -9,13 +9,12 @@ import (
 	"strings"
 )
 
-type GateType int
+type GateType string
 
 const (
-	_ GateType = iota
-	Xor
-	And
-	Or
+	Xor GateType = "XOR"
+	And GateType = "AND"
+	Or  GateType = "OR"
 )
 
 type prevType int
@@ -34,25 +33,35 @@ type Node struct {
 	Out  string
 }
 
+type LogicGate struct {
+	GateType string
+	At       int
+}
+
 type Decl struct {
-	IOPorts *[]IOPort
-	Wires   *[]Wire
+	//name is key
+	IOPorts map[string]IOPort
+	Wires   map[string]Wire
 }
 
 type ParseResult struct {
-	Nodes       map[int]Node
-	Declaration *Decl
+	// relation
+	Nodes        map[int]Node
+	Declarations *Decl
+	LogicGates   map[int]LogicGate
 }
 
-func NewParse() ParseResult {
-	file := NewReader("test.txt")
+func NewParse(filename string) ParseResult {
+	file := NewReader(filename)
 	scanner := NewScanner(file)
 	// Nodes
 	newNodes := map[int]Node{}
 	// Declsetup
 	newDecl := new(Decl)
-	newDecl.IOPorts = new([]IOPort)
-	newDecl.Wires = new([]Wire)
+	newDecl.IOPorts = map[string]IOPort{}
+	newDecl.Wires = map[string]Wire{}
+	// logicgate
+	newLogicGates := map[int]LogicGate{}
 
 	ioportlist := []string{} //このリストをもとにWireのIOを除外するかどうか決める
 
@@ -108,10 +117,15 @@ func NewParse() ParseResult {
 				log.Fatalln(err)
 			}
 			mapval := newNodes[at]
-			mapval.Gate, err = parseGate(strline[0])
+			logicgate, err := parseGate(strline[0])
 			if err != nil {
 				log.Fatalln(err)
 			}
+			mapval.Gate = logicgate
+			// Logicgateに加える
+			newLogicGates[at] = LogicGate{GateType: string(logicgate), At: at}
+
+			// relationに加える
 			newNodes[at] = mapval
 			pt = Gate
 
@@ -146,8 +160,9 @@ func NewParse() ParseResult {
 		}
 	}
 	return ParseResult{
-		Nodes:       newNodes,
-		Declaration: newDecl,
+		Nodes:        newNodes,
+		Declarations: newDecl,
+		LogicGates:   newLogicGates,
 	}
 
 }
@@ -166,6 +181,8 @@ type IOPort struct {
 
 type Wire struct {
 	Name string
+	//todo
+	//Width
 }
 
 func (d Decl) parseIOPortlist(declstr []string, list []string) error {
@@ -175,19 +192,19 @@ func (d Decl) parseIOPortlist(declstr []string, list []string) error {
 		name := declstr[1]
 		name = removechar(name)
 		if !slices.Contains(list, name) {
-			*d.Wires = append(*d.Wires, Wire{Name: name})
+			d.Wires[name] = Wire{Name: name}
 		}
 		// なかったら何もせずスキップ
 
 	case "Input:":
 		name := declstr[1]
 		name = removechar(name)
-		*d.IOPorts = append(*d.IOPorts, IOPort{Type: IN, Name: name})
+		d.IOPorts[name] = IOPort{Type: IN, Name: name}
 
 	case "Output:":
 		name := declstr[1]
 		name = removechar(name)
-		*d.IOPorts = append(*d.IOPorts, IOPort{Type: OUT, Name: name})
+		d.IOPorts[name] = IOPort{Type: OUT, Name: name}
 	default:
 		return fmt.Errorf("decl is not recognize %s", declType)
 	}
@@ -238,7 +255,7 @@ func parseGate(str string) (GateType, error) {
 	case "And:":
 		return And, nil
 	default:
-		return 0, fmt.Errorf("GateType is not implementence: %s", gate)
+		return "", fmt.Errorf("GateType is not implementence: %s", gate)
 	}
 }
 

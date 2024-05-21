@@ -6,8 +6,9 @@ import (
 )
 
 func TestParse(t *testing.T) {
-	parsed := NewParse()
+	parsed := NewParse("test.txt")
 	fmt.Println(parsed.Nodes)
-	fmt.Println(parsed.Declaration.IOPorts)
-	fmt.Println(parsed.Declaration.Wires)
+	fmt.Println(parsed.Declarations.IOPorts)
+	fmt.Println(parsed.Declarations.Wires)
+	fmt.Println(parsed.LogicGates)
 }
