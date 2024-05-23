@@ -177,3 +177,17 @@ func (gw *GateWire) GatetoWire(ctx context.Context, driver neo4j.DriverWithConte
 	}
 	return nil
 }
+
+// 複数のユーザーデータベースは作れないので全部消すしかないため用意
+func DBtableAllClear(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+	_, err := neo4j.ExecuteQuery(ctx, driver,
+		``,
+		map[string]any{},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("DBtableAllClear Error:%v", err)
+		return err
+	}
+	return nil
+}
