@@ -26,8 +26,11 @@ to quickly create a Cobra application.`,
 		parseresult := parser.NewParse(filepath)
 		// Connectionの設定は後で考える
 		dbname := "neo4j"
-		driver := graph.NewDriver()
+
+		//driver := graph.NewDriver()
+		driver := graph.SelectDriver("origin")
 		ctx := context.Background()
+
 		defer driver.Driver.Close(ctx)
 		var err error
 		for _, io := range parseresult.Declarations.IOPorts {

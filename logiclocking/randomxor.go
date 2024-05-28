@@ -1,0 +1,5 @@
+package logiclocking
+
+func XorLock() {
+
+}

@@ -1,0 +1,21 @@
+services:
+  circutdb:
+    restart: always
+    image: "neo4j:latest"
+    ports: 
+      - 7475:7474
+      - 7688:7687
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - $HOME/neo4j/circutdb/data:/data
+  llcircuitdb:
+    restart: always
+    image: "neo4j:latest"
+    ports: 
+      - 7476:7474
+      - 7689:7687
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - $HOME/neo4j/llcircutdb/data:/data
