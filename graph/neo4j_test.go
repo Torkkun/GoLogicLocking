@@ -3,6 +3,7 @@ package graph
 import (
 	"context"
 	"fmt"
+	"log"
 	"testing"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
@@ -62,4 +63,67 @@ func TestCountOUT(t *testing.T) {
 		panic(err)
 	}
 	fmt.Println(num)
+}
+
+func TestGetLG(t *testing.T) {
+	ctx := context.Background()
+	dbUri := "neo4j://localhost"
+	dbUser := "neo4j"
+	dbPassword := "secretgraph"
+	driver, err := neo4j.NewDriverWithContext(
+		dbUri,
+		neo4j.BasicAuth(dbUser, dbPassword, ""))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer driver.Close(ctx)
+	lgn, err := GetAllLogicNodes(ctx, driver, "neo4j")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for _, lg := range lgn {
+		fmt.Println(*lg.LGN, lg.ElementId, lg.Id)
+	}
+}
+
+func TestGetIO(t *testing.T) {
+	ctx := context.Background()
+	dbUri := "neo4j://localhost"
+	dbUser := "neo4j"
+	dbPassword := "secretgraph"
+	driver, err := neo4j.NewDriverWithContext(
+		dbUri,
+		neo4j.BasicAuth(dbUser, dbPassword, ""))
+	if err != nil {
+		panic(err)
+	}
+	defer driver.Close(ctx)
+	ion, err := GetAllIONode(ctx, driver, "neo4j")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for _, io := range ion {
+		fmt.Println(*io.ION, io.ElementId, io.Id)
+	}
+}
+
+func TestGetWire(t *testing.T) {
+	ctx := context.Background()
+	dbUri := "neo4j://localhost"
+	dbUser := "neo4j"
+	dbPassword := "secretgraph"
+	driver, err := neo4j.NewDriverWithContext(
+		dbUri,
+		neo4j.BasicAuth(dbUser, dbPassword, ""))
+	if err != nil {
+		panic(err)
+	}
+	defer driver.Close(ctx)
+	wn, err := GetAllWireNodes(ctx, driver, "neo4j")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	for _, w := range wn {
+		fmt.Println(*w.WN, w.ElementId, w.Id)
+	}
 }

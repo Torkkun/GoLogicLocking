@@ -96,3 +96,14 @@ func OUTtoLG(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 	}
 	return nil
 }
+
+type AllNodes struct {
+	Ios IONodes
+	Lgs []LogicGateNode
+	Ws  []WireNode
+}
+
+type IONodes struct {
+	In  []IONode
+	Out []IONode
+}
