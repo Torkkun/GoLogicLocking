@@ -98,15 +98,16 @@ func OUTtoLG(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 	return nil
 }
 
+// nep4jのElementidをKeyとする
 type AllNode struct {
 	Ios *IONodes
-	Lgs []*GetNeo4JLogicNode
-	Ws  []*GetNeo4JWireNode
+	Lgs map[string]*GetNeo4JLogicNode
+	Ws  map[string]*GetNeo4JWireNode
 }
 
 type IONodes struct {
-	In  []*GetNeo4JIONode
-	Out []*GetNeo4JIONode
+	In  map[string]*GetNeo4JIONode
+	Out map[string]*GetNeo4JIONode
 }
 
 func GetAllNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (*AllNode, error) {
@@ -135,15 +136,15 @@ func GetAllNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname str
 	}, nil
 }
 
-func SeparateIOType(allio []*GetNeo4JIONode) (*IONodes, error) {
-	var innodes []*GetNeo4JIONode
-	var outnodes []*GetNeo4JIONode
-	for _, io := range allio {
+func SeparateIOType(allio map[string]*GetNeo4JIONode) (*IONodes, error) {
+	innodes := make(map[string]*GetNeo4JIONode)
+	outnodes := make(map[string]*GetNeo4JIONode)
+	for key, io := range allio {
 		switch io.ION.Type {
 		case "IN":
-			innodes = append(innodes, io)
+			innodes[key] = io
 		case "OUT":
-			outnodes = append(outnodes, io)
+			outnodes[key] = io
 		default:
 			return nil, fmt.Errorf("SeparateIOType Error %v", io.ION.Type)
 		}

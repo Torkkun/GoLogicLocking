@@ -73,44 +73,6 @@ func (io *IONode) CreateInOutNode(ctx context.Context, driver neo4j.DriverWithCo
 	return nil
 }
 
-type GetNeo4JIONode struct {
-	ION       *IONode
-	Id        int64
-	ElementId string
-}
-
-func GetAllIONode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) ([]*GetNeo4JIONode, error) {
-	result, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH(io:IO) RETURN io`,
-		nil,
-		neo4j.EagerResultTransformer,
-		neo4j.ExecuteQueryWithDatabase(dbname))
-	if err != nil {
-		err = fmt.Errorf("GetAllIONodes Error:%v", err)
-		return nil, err
-	}
-	var ionodes []*GetNeo4JIONode
-	for _, record := range result.Records {
-		io, ok := record.Get("io")
-		if !ok {
-			err = fmt.Errorf("GetAllIONode Error")
-			return nil, err
-		}
-		tmp := io.(neo4j.Node)
-		ionodes = append(ionodes,
-			&GetNeo4JIONode{
-				ION: &IONode{
-					Type: tmp.Props["type"].(string),
-					Name: tmp.Props["name"].(string),
-				},
-				ElementId: tmp.GetElementId(),
-				Id:        tmp.GetId(),
-			},
-		)
-	}
-	return ionodes, nil
-}
-
 type LogicGateNode struct {
 	GateType string
 	At       int
@@ -132,43 +94,6 @@ func (gate *LogicGateNode) CreateLogicGateNode(ctx context.Context, driver neo4j
 	return nil
 }
 
-type GetNeo4JLogicNode struct {
-	LGN       *LogicGateNode
-	Id        int64
-	ElementId string
-}
-
-func GetAllLogicNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string) ([]*GetNeo4JLogicNode, error) {
-	result, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH(g:Gate) RETURN g`,
-		nil,
-		neo4j.EagerResultTransformer,
-		neo4j.ExecuteQueryWithDatabase(dbname))
-	if err != nil {
-		err = fmt.Errorf("GetAllLogicNodes Error:%v", err)
-		return nil, err
-	}
-	var lgnodes []*GetNeo4JLogicNode
-	for _, record := range result.Records {
-		io, ok := record.Get("g")
-		if !ok {
-			err = fmt.Errorf("GetAllLogicNode Error")
-			return nil, err
-		}
-		tmp := io.(neo4j.Node)
-		lgnodes = append(lgnodes,
-			&GetNeo4JLogicNode{
-				LGN: &LogicGateNode{
-					GateType: tmp.Props["type"].(string),
-					At:       int(tmp.Props["at"].(int64)),
-				},
-				ElementId: tmp.GetElementId(),
-				Id:        tmp.GetId(),
-			})
-	}
-	return lgnodes, nil
-}
-
 type WireNode struct {
 	Name string
 }
@@ -186,41 +111,6 @@ func (wire *WireNode) CreateWireNode(ctx context.Context, driver neo4j.DriverWit
 		return err
 	}
 	return nil
-}
-
-type GetNeo4JWireNode struct {
-	WN        *WireNode
-	Id        int64
-	ElementId string
-}
-
-func GetAllWireNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string) ([]*GetNeo4JWireNode, error) {
-	result, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH(w:Wire) RETURN w`,
-		nil,
-		neo4j.EagerResultTransformer,
-		neo4j.ExecuteQueryWithDatabase(dbname))
-	if err != nil {
-		err = fmt.Errorf("GetAllNodes Error:%v", err)
-		return nil, err
-	}
-	var wnodes []*GetNeo4JWireNode
-	for _, record := range result.Records {
-		io, ok := record.Get("w")
-		if !ok {
-			err = fmt.Errorf("GetAllWireNode Error")
-			return nil, err
-		}
-		tmp := io.(neo4j.Node)
-		wnodes = append(wnodes, &GetNeo4JWireNode{
-			WN: &WireNode{
-				Name: tmp.Props["name"].(string),
-			},
-			ElementId: tmp.GetElementId(),
-			Id:        tmp.GetId(),
-		})
-	}
-	return wnodes, nil
 }
 
 // 複数のユーザーデータベースは作れないので全部消すしかないため用意

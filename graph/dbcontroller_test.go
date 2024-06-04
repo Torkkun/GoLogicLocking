@@ -25,7 +25,6 @@ func TestGetAllNode(t *testing.T) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println("")
 	for _, val := range all.Lgs {
 		fmt.Println(*val.LGN)
 	}
