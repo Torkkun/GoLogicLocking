@@ -30,5 +30,7 @@ var logiclock string
 
 func init() {
 	rootCmd.AddCommand(llCmd)
-
+	// 実行したいロジックロックを指定する
+	graphdbCmd.Flags().StringVarP(&logiclock, "logiclock", "ll", "", "input ast filepath")
+	graphdbCmd.MarkFlagRequired("logiclock")
 }

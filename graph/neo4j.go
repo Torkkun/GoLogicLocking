@@ -113,6 +113,7 @@ func (wire *WireNode) CreateWireNode(ctx context.Context, driver neo4j.DriverWit
 	return nil
 }
 
+// Create Relationship
 // 後で良い方法を考える OGM（object graph mapping）
 // IO(IN) <- Gate
 
@@ -206,6 +207,8 @@ func (gw *GateWire) GatetoWire(ctx context.Context, driver neo4j.DriverWithConte
 	return nil
 }
 
+// Delete Relationship
+
 func (gi *GateIO) DeleteRelationGatetoIO(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
 		`MATCH (io:IO {type: $io_type, name: $io_name})<-[r:LGtoIO]-(g:Gate {type: $g_type, at: $g_at})
@@ -283,7 +286,7 @@ func (gw *GateWire) DeleteRelationGatetoWire(ctx context.Context, driver neo4j.D
 // 複数のユーザーデータベースは作れないので全部消すしかないため用意
 func DBtableAllClear(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
-		``,
+		`MATCH (n) DETACH DELETE n`,
 		map[string]any{},
 		neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase(dbname))
@@ -292,4 +295,58 @@ func DBtableAllClear(ctx context.Context, driver neo4j.DriverWithContext, dbname
 		return err
 	}
 	return nil
+}
+
+func CountGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (int, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`MATCH (n:Gate) RETURN count(n) as count`,
+		map[string]any{},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("CountGateNode Error:%v", err)
+		return 0, err
+	}
+	var tmp int64
+	if len(result.Records) != 1 {
+		err = fmt.Errorf("CountGateNode query is not invalid")
+		return 0, err
+	} else {
+		record := result.Records[0]
+		rawValue, ok := record.Get("count")
+		if !ok {
+			err = fmt.Errorf("CountGateNode Error:%v", err)
+			return 0, err
+		}
+		tmp = rawValue.(int64)
+	}
+	intnum := int(tmp)
+	return intnum, nil
+}
+
+func CountOUT(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (int, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`MATCH (n:IO {type:"OUT"}) RETURN count(n) as count`,
+		map[string]any{},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("CountIONode Error:%v", err)
+		return 0, err
+	}
+	var tmp int64
+	if len(result.Records) != 1 {
+		err = fmt.Errorf("CountIONode query is not invalid")
+		return 0, err
+	} else {
+		record := result.Records[0]
+		rawValue, ok := record.Get("count")
+		if !ok {
+			err = fmt.Errorf("CountIONode Error:%v", err)
+			return 0, err
+		}
+		tmp = rawValue.(int64)
+	}
+	intnum := int(tmp)
+	return intnum, nil
 }
