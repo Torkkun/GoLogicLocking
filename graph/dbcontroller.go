@@ -154,3 +154,9 @@ func SeparateIOType(allio map[string]*GetNeo4JIONode) (*IONodes, error) {
 		Out: outnodes,
 	}, nil
 }
+
+// 親ノードを取得
+func Predecessors() {}
+
+// 子ノードを取得
+func Successors() {}

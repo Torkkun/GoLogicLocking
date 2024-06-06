@@ -9,12 +9,12 @@ import (
 )
 
 func TestNewParseDB(t *testing.T) {
-	parseresult := parser.NewParse(filepath)
+	parseresult := parser.NewParse("../testtxt/test.txt")
 	// Connectionの設定は後で考える
 	dbname := "neo4j"
 
-	//driver := graph.NewDriver()
-	driver := graph.SelectDriver("origin")
+	driver := graph.NewDriver()
+	//driver := graph.SelectDriver("origin")
 	ctx := context.Background()
 
 	defer driver.Driver.Close(ctx)
@@ -65,8 +65,9 @@ func TestNewParseDB(t *testing.T) {
 }
 
 func TestDeleteAllDB(t *testing.T) {
-	driver := graph.SelectDriver("origin")
+	//driver := graph.SelectDriver("origin")
 	//driver := graph.SelectDriver("copy")
+	driver := graph.NewDriver()
 	ctx := context.Background()
 
 	defer driver.Driver.Close(ctx)

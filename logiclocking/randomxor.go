@@ -35,29 +35,29 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 			Id:        v.Id,
 		})
 	}
-	for _, v := range all.Ws {
-		idlist = append(idlist, Id{
-			ElementId: v.ElementId,
-			Id:        v.Id,
-		})
-	}
-	for _, v := range all.Ios.In {
-		idlist = append(idlist, Id{
-			ElementId: v.ElementId,
-			Id:        v.Id,
-		})
-	}
 
 	gates, err := utils.Sample(idlist, keylen)
 	if err != nil {
 		log.Fatalln(err)
 	}
-
-	for _, gate := range gates {
-		// TRUEまたはFALSEがゲートに設定されるが、
+	key := make(map[string]bool)
+	for i, gate := range gates {
+		// TRUEまたはFALSEがゲートに設定される
+		b, err := utils.Choice([]bool{true, false})
+		if err != nil {
+			log.Fatalln(err)
+		}
+		keystring := fmt.Sprintf("key_prefix%s", i)
+		key[keystring] = b
 		//  - TRUEならXNOR、FALSEならXORとゲートタイプが決定される
-		fmt.Println(gate)
+		var gateType string
+		if b {
+			gateType = "XNOR"
+		} else {
+			gateType = "XOR"
+		}
 		// ゲートの追加とインプットの追加を行う
+
 		//　もともとのロジックゲートのOUTと
 	}
 

@@ -72,18 +72,11 @@ func NewParse(filename string) ParseResult {
 		strline := strings.Fields(txt)
 
 		switch strline[0] {
-		case "Portlist:":
-			// 次の値を取得
-			strline = peekScan(scanner)
-			isPort := strline[0]
-			for isPort == "Port:" {
-				portname := strline[1]
-				portname = removechar(portname)
-				ioportlist = append(ioportlist, portname)
-				// 次の値を取得して更新
-				strline = peekScan(scanner)
-				isPort = strline[0]
-			}
+		case "Port:":
+			portname := strline[1]
+			portname = removechar(portname)
+			ioportlist = append(ioportlist, portname)
+
 		case "Decl:":
 			strline = peekScan(scanner)
 			newDecl.parseIOPortlist(strline, ioportlist)
