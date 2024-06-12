@@ -76,7 +76,9 @@ func TestXorLock(t *testing.T) {
 		log.Fatalln(err)
 	}
 	defer driver.Close(ctx)
-	if err = XorLock(ctx, driver, "neo4j", 2); err != nil {
+	key, err := XorLock(ctx, driver, "neo4j", 2)
+	if err != nil {
 		log.Fatalln(err)
 	}
+	fmt.Println(key)
 }

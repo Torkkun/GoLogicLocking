@@ -14,7 +14,7 @@ type Id struct {
 	Id        int64
 }
 
-func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string, keylen int) error {
+func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string, keylen int) (map[string]bool, error) {
 	// db側でコピー（Cyperクエリのバックアップクエリ）
 
 	// ノード数 - アウトプットの数でロック用のゲートを作成
@@ -24,7 +24,7 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 	//  - circuitgraphのchoicesとsample関数をチラ見する
 	all, err := graph.GetAllNodes(ctx, driver, dbname)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	// GateLogicとWireとInputからランダムにロックするゲートを選ぶ
 
@@ -38,19 +38,19 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 
 	if len(idlist) < keylen {
 		err = fmt.Errorf("ERROR:to much keylength, plese input less than %v", len(idlist))
-		return err
+		return nil, err
 	}
 
 	gates, err := utils.Sample(idlist, keylen)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	key := make(map[string]bool)
 	for i, gate := range gates {
 		// TRUEまたはFALSEがゲートに設定される
 		b, err := utils.Choice([]bool{true, false})
 		if err != nil {
-			return err
+			return nil, err
 		}
 		keystring := fmt.Sprintf("key_%v", i)
 		key[keystring] = b
@@ -64,7 +64,7 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 
 		pres, err := GetGatePredecessorNodes(ctx, driver, dbname, gate)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		// コネクションを外す
 		// 1 対 1で繋がっているものとする
@@ -75,7 +75,7 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 		newL.Name = fmt.Sprintf("key_gate_%v", i)
 		newLGEid, err := newL.CreateLockingGateNode(ctx, driver, dbname)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		// ノード作成後ElementId取得して設定
 		newL.ElementId = newLGEid
@@ -84,13 +84,13 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 		newio.Name = fmt.Sprintf("key_%v", i)
 		newio.Type = "IN"
 		if err = newio.CreateInOutNode(ctx, driver, dbname); err != nil {
-			return err
+			return nil, err
 		}
 		// もともとのロジックゲートのOUTを外して、付け替える
 		if len(pres.IOaR) != 0 {
 			ioar := pres.IOaR[0]
 			if err = graph.DeleteRelationIOtoGateByElementId(ctx, driver, dbname, ioar.Relation.ElementId); err != nil {
-				return err
+				return nil, err
 			}
 			// xorとio(out)を接続
 			funout := ioar.Neo4JIO
@@ -98,13 +98,13 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 			newIOtoLG.Gate = newL
 			newIOtoLG.Io = funout.ION
 			if err = newIOtoLG.IOtoLLGateByElementId(ctx, driver, dbname); err != nil {
-				return err
+				return nil, err
 			}
 
 		} else if len(pres.WaR) != 0 {
 			war := pres.WaR[0]
 			if err = graph.DeleteRelationWiretoGateByElementId(ctx, driver, dbname, war.Relation.ElementId); err != nil {
-				return err
+				return nil, err
 			}
 			// xorとwireを接続
 			funout := war.Neo4JWire
@@ -112,19 +112,19 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 			newWtoLG.Gate = newL
 			newWtoLG.Wire = funout.WN
 			if err = newWtoLG.WiretoLLGateByElementId(ctx, driver, dbname); err != nil {
-				return err
+				return nil, err
 			}
 
 		} else {
 			err = fmt.Errorf("GateRelation is missing")
-			return err
+			return nil, err
 		}
 		// key追加とxorゲートと接続
 		newLGtoIO := new(graph.LockGateIO)
 		newLGtoIO.Gate = newL
 		newLGtoIO.Io = newio
 		if err = newLGtoIO.LLGatetoIOByElementId(ctx, driver, dbname); err != nil {
-			return err
+			return nil, err
 		}
 		// xorゲートと元のゲートと接続
 		funin := all.Lgs[gate.ElementId].LGN
@@ -132,10 +132,10 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 		newLgtoG.LGN = funin
 		newLgtoG.LLGN = newL
 		if err = newLgtoG.LLGatetoGateElementId(ctx, driver, dbname); err != nil {
-			return err
+			return nil, err
 		}
 	}
-	return nil
+	return key, nil
 }
 
 type GatePredecessorNodes struct {
