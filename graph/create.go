@@ -49,6 +49,42 @@ func (gate *LogicGateNode) CreateLogicGateNode(ctx context.Context, driver neo4j
 	return nil
 }
 
+type LockGateNode struct {
+	GateType  string
+	LockType  string
+	Name      string
+	ElementId string
+}
+
+func (lg *LockGateNode) CreateLockingGateNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (string, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`CREATE (g:Gate {type: $type, ll: $ll})
+		RETURN g`,
+		map[string]any{
+			"type": lg.GateType,
+			"ll":   lg.LockType,
+			"name": lg.Name,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
+	if err != nil {
+		err = fmt.Errorf("CreateLockingGateNode Error:%v", err)
+		return "", err
+	}
+	if len(result.Records) > 1 {
+		err = fmt.Errorf("CreateLockingGateNode is to match:%v", len(result.Records))
+		return "", err
+	}
+	record := result.Records[0]
+	g, ok := record.Get("g")
+	if !ok {
+		err = fmt.Errorf("NotfoundCreated Locking Node")
+		return "", err
+	}
+	tmpg := g.(neo4j.Node)
+	return tmpg.GetElementId(), nil
+}
+
 type WireNode struct {
 	Name string
 }

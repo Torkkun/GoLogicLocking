@@ -38,7 +38,7 @@ func TestNewParseDB(t *testing.T) {
 	}
 	for _, logicgate := range parseresult.LogicGates {
 		gate := graph.LogicGateNode{
-			GateType: logicgate.GateType,
+			GateType: string(logicgate.GateType),
 			At:       logicgate.At,
 		}
 		if err = gate.CreateLogicGateNode(ctx, driver.Driver, dbname); err != nil {

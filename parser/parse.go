@@ -3,18 +3,11 @@ package parser
 import (
 	"bufio"
 	"fmt"
+	"goll/utils"
 	"log"
 	"slices"
 	"strconv"
 	"strings"
-)
-
-type GateType string
-
-const (
-	Xor GateType = "XOR"
-	And GateType = "AND"
-	Or  GateType = "OR"
 )
 
 type prevType int
@@ -29,12 +22,12 @@ const (
 type Node struct {
 	In1  string
 	In2  string
-	Gate GateType
+	Gate utils.GateType
 	Out  string
 }
 
 type LogicGate struct {
-	GateType string
+	GateType utils.GateType
 	At       int
 }
 
@@ -116,7 +109,7 @@ func NewParse(filename string) ParseResult {
 			}
 			mapval.Gate = logicgate
 			// Logicgateに加える
-			newLogicGates[at] = LogicGate{GateType: string(logicgate), At: at}
+			newLogicGates[at] = LogicGate{GateType: logicgate, At: at}
 
 			// relationに加える
 			newNodes[at] = mapval
@@ -236,17 +229,17 @@ func parseAt(str string) (int, error) {
 	return at, nil
 }
 
-func parseGate(str string) (GateType, error) {
+func parseGate(str string) (utils.GateType, error) {
 	splitstr := strings.Fields(str)
 
 	gate := splitstr[0]
 	switch gate {
 	case "Xor:":
-		return Xor, nil
+		return utils.Xor, nil
 	case "Or:":
-		return Or, nil
+		return utils.Or, nil
 	case "And:":
-		return And, nil
+		return utils.And, nil
 	default:
 		return "", fmt.Errorf("GateType is not implementence: %s", gate)
 	}

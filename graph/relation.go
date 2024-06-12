@@ -21,8 +21,8 @@ type Relation struct {
 // IO(IN) <- Gate
 
 type GateIO struct {
-	Gate LogicGateNode
-	Io   IONode
+	Gate *LogicGateNode
+	Io   *IONode
 	At   int
 }
 
@@ -46,8 +46,33 @@ func (gi *GateIO) GatetoIO(ctx context.Context, driver neo4j.DriverWithContext, 
 	return nil
 }
 
+type LockGateIO struct {
+	Gate *LockGateNode
+	Io   *IONode
+}
+
+func (lgi *LockGateIO) LLGatetoIO(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+	_, err := neo4j.ExecuteQuery(ctx, driver, `
+		MATCH (io:IO {type: $io_type, name: $io_name}), (g:LLGate {type: $g_type, locktype: $ll_type, name: $name})
+		MERGE (io)<-[:LLGtoIO]-(g)
+		`,
+		map[string]any{
+			"io_type": lgi.Io.Type,
+			"io_name": lgi.Io.Name,
+			"g_type":  lgi.Gate.GateType,
+			"ll_type": lgi.Gate.LockType,
+			"name":    lgi.Gate.Name,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
+	if err != nil {
+		err = fmt.Errorf("MERGE LLGatetoIO Error:%v", err)
+		return err
+	}
+	return nil
+}
+
 // IO(IN) <- Gateのリレーションを取得
-// 一旦未使用
 func (io *IONode) GetLGtoIORelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
 		`MATCH (:IO {name: $io_name, type: $io_type})<-[r:LGtoIO]-(:Gate) RETURN r`,
@@ -84,6 +109,26 @@ func (gi *GateIO) IOtoGate(ctx context.Context, driver neo4j.DriverWithContext, 
 	return nil
 }
 
+// LockingGate <- IO(OUT)
+func (lgi *LockGateIO) IOtoLLGateByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+	_, err := neo4j.ExecuteQuery(ctx, driver,
+		`MATCH (lg:Gate), (io:IO {type: $io_type, name: $io_name})
+		WHERE elementId(lg)=$element_id
+		MERGE (lg)<-[:IOtoLLG]-(io)`,
+		map[string]any{
+			"io_type":    lgi.Io.Type,
+			"io_name":    lgi.Io.Name,
+			"element_id": lgi.Gate.ElementId,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
+	if err != nil {
+		err = fmt.Errorf("MERGE IOtoLLGate Error:%v", err)
+		return err
+	}
+	return nil
+}
+
 type GetNeo4JIoAndRelation struct {
 	Neo4JIO  *GetNeo4JIONode
 	Relation *Relation
@@ -92,7 +137,10 @@ type GetNeo4JIoAndRelation struct {
 // Gate <- IO(OUT)のリレーション
 func (lg *LogicGateNode) GetIOtoGateRelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (map[string]*GetNeo4JIoAndRelation, error) {
 	result, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH (:Gate {type: $g_type, at: $g_at})<-[r:IOtoLG]-(io:IO) RETURN r,io`,
+		`
+		MATCH (:Gate {type: $g_type, at: $g_at})<-[r:IOtoLG]-(io:IO)
+		RETURN r,io
+		`,
 		map[string]any{
 			"g_type": lg.GateType,
 			"g_at":   lg.At,
@@ -135,13 +183,63 @@ func (lg *LogicGateNode) GetIOtoGateRelation(ctx context.Context, driver neo4j.D
 			},
 		}
 	}
+	return ioandrelation, nil
+}
+
+func GetIOtoGateRelationByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname, elementId string) ([]*GetNeo4JIoAndRelation, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`
+		MATCH (g:Gate)<-[r:IOtoLG]-(io:IO)
+		WHERE elementId(g)=$element_id
+		RETURN r,io
+		`,
+		map[string]any{
+			"element_id": elementId,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("MATCH IOtoLG Relation Error:%v", err)
+		return nil, err
+	}
+	ioandrelation := []*GetNeo4JIoAndRelation{}
+	for _, record := range result.Records {
+		io, ok := record.Get("io")
+		if !ok {
+			err = fmt.Errorf("GetPredecessor IO Node Error")
+			return nil, err
+		}
+		tmpio := io.(neo4j.Node)
+		r, ok := record.Get("r")
+		if !ok {
+			err = fmt.Errorf("GetIO to Gate Relation Error")
+			return nil, err
+		}
+		tmpr := r.(neo4j.Relationship)
+		ioandrelation = append(ioandrelation, &GetNeo4JIoAndRelation{
+			Neo4JIO: &GetNeo4JIONode{
+				ION: &IONode{
+					Type: tmpio.Props["type"].(string),
+					Name: tmpio.Props["name"].(string),
+				},
+				ElementId: tmpio.GetElementId(),
+				Id:        tmpio.GetId(),
+			},
+			Relation: &Relation{
+				Identity:           tmpr.GetId(),
+				ElementId:          tmpr.GetElementId(),
+				StartNodeElementId: tmpr.StartElementId,
+				EndNodeElementId:   tmpr.EndElementId,
+			},
+		})
+	}
 
 	return ioandrelation, nil
 }
 
 type GateWire struct {
-	Gate LogicGateNode
-	Wire WireNode
+	Gate *LogicGateNode
+	Wire *WireNode
 	At   int
 }
 
@@ -159,6 +257,31 @@ func (gw *GateWire) WiretoGate(ctx context.Context, driver neo4j.DriverWithConte
 		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
 	if err != nil {
 		err = fmt.Errorf("MERGE WiretoGate Error:%v", err)
+		return err
+	}
+	return nil
+}
+
+type LockGateWire struct {
+	Gate *LockGateNode
+	Wire *WireNode
+}
+
+// LGate <- Wire
+func (lgw *LockGateWire) WiretoLLGateByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+	_, err := neo4j.ExecuteQuery(ctx, driver, `
+		MATCH (lg:LLGate), (w:Wire {name: $w_name})
+		WHERE elementId(lg)=$element_id
+		MERGE (lg)<-[:WiretoLLG]-(w)
+		`,
+		map[string]any{
+			"w_name":     lgw.Wire.Name,
+			"element_id": lgw.Gate.ElementId,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
+	if err != nil {
+		err = fmt.Errorf("MERGE LLGatetoIO Error:%v", err)
 		return err
 	}
 	return nil
@@ -218,6 +341,56 @@ func (g *LogicGateNode) GetWiretoGateRelation(ctx context.Context, driver neo4j.
 	return wireandrelation, nil
 }
 
+func GetWiretoGateRelationByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname, elementId string) ([]*GetNeo4JWireAndRelation, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`
+		MATCH (g:Gate)<-[r:WiretoLG]-(w:Wire)
+		WHERE elementId(g)=$element_id
+		RETURN r,w
+		`,
+		map[string]any{
+			"element_id": elementId,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("MATCH WiretoGate Relation Error:%v", err)
+		return nil, err
+	}
+	wireandrelation := []*GetNeo4JWireAndRelation{}
+	for _, record := range result.Records {
+		w, ok := record.Get("w")
+		if !ok {
+			err = fmt.Errorf("GetPredecessor Wire Node Error")
+			return nil, err
+		}
+		tmpw := w.(neo4j.Node)
+		r, ok := record.Get("r")
+		if !ok {
+			err = fmt.Errorf("GetWire to Gate Relation Error")
+			return nil, err
+		}
+		tmpr := r.(neo4j.Relationship)
+		wireandrelation = append(wireandrelation, &GetNeo4JWireAndRelation{
+			Neo4JWire: &GetNeo4JWireNode{
+				WN: &WireNode{
+					Name: tmpw.Props["name"].(string),
+				},
+				ElementId: tmpw.GetElementId(),
+				Id:        tmpw.GetId(),
+			},
+			Relation: &Relation{
+				Identity:           tmpr.GetId(),
+				ElementId:          tmpr.GetElementId(),
+				StartNodeElementId: tmpr.StartElementId,
+				EndNodeElementId:   tmpr.EndElementId,
+			},
+		})
+
+	}
+	return wireandrelation, nil
+}
+
 // Wire <- Gate
 func (gw *GateWire) GatetoWire(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
@@ -237,81 +410,28 @@ func (gw *GateWire) GatetoWire(ctx context.Context, driver neo4j.DriverWithConte
 	return nil
 }
 
-// Delete Relationship
-func (gi *GateIO) DeleteRelationGatetoIO(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+type LLGateGate struct {
+	LLGN *LockGateNode
+	LGN  *LogicGateNode
+}
+
+// Gate <- LLGate
+func (llgg *LLGateGate) LLGatetoGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH (io:IO {type: $io_type, name: $io_name})<-[r:LGtoIO]-(g:Gate {type: $g_type, at: $g_at})
-		DELETE r`,
+		`MATCH (g:Gate {type: $g_type, at: $g_at}), (lg:LLGate {type: $lg_type, locktype: $ll_type, name: $name})
+		MERGE (g)<-[:LLGtoG]-(lg)`,
 		map[string]any{
-			"io_type": gi.Io.Type,
-			"io_name": gi.Io.Name,
-			"g_type":  gi.Gate.GateType,
-			"g_at":    gi.Gate.At,
+			"g_type":  llgg.LGN.GateType,
+			"g_at":    llgg.LGN.At,
+			"lg_type": llgg.LLGN.GateType,
+			"ll_type": llgg.LLGN.LockType,
+			"name":    llgg.LLGN.Name,
 		},
 		neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase(dbname))
 	if err != nil {
-		err = fmt.Errorf("DELETE GatetoIO Relation Error:%v", err)
+		err = fmt.Errorf("MERGE LLGatetoGate Error:%v", err)
 		return err
 	}
 	return nil
-}
-
-func (gi *GateIO) DeleteRelationIOtoGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
-	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH (g:Gate {type: $g_type, at: $g_at})<-[r:IOtoLG]-(io:IO {type: $io_type, name: $io_name})
-		DELETE r`,
-		map[string]any{
-			"io_type": gi.Io.Type,
-			"io_name": gi.Io.Name,
-			"g_type":  gi.Gate.GateType,
-			"g_at":    gi.Gate.At,
-		},
-		neo4j.EagerResultTransformer,
-		neo4j.ExecuteQueryWithDatabase(dbname))
-	if err != nil {
-		err = fmt.Errorf("DELETE IOtoGate Relation Error:%v", err)
-		return err
-	}
-	return nil
-}
-
-func (gw *GateWire) DeleteRelationWiretoGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
-	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH (g:Gate {type: $g_type, at: $g_at})<-[r:WiretoLG]-(w:Wire {name: $w_name})
-		DELETE r`,
-		map[string]any{
-			"g_type": gw.Gate.GateType,
-			"g_at":   gw.Gate.At,
-			"w_name": gw.Wire.Name,
-		},
-		neo4j.EagerResultTransformer,
-		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
-	if err != nil {
-		err = fmt.Errorf("DELETE WiretoGate Relation Error:%v", err)
-		return err
-	}
-	return nil
-}
-
-func (gw *GateWire) DeleteRelationGatetoWire(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
-	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH (w:Wire {name: $w_name})<-[r:LGtoWire]-(g:Gate {type: $g_type, at: $g_at})
-		DELETE r `,
-		map[string]any{
-			"w_name": gw.Wire.Name,
-			"g_type": gw.Gate.GateType,
-			"g_at":   gw.Gate.At,
-		},
-		neo4j.EagerResultTransformer,
-		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
-	if err != nil {
-		err = fmt.Errorf("DELETE GatetoWire Relation Error:%v", err)
-		return err
-	}
-	return nil
-}
-
-func DeleteRelationByElementID() {
-
 }

@@ -28,24 +28,8 @@ func TestXOR(t *testing.T) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	type Id struct {
-		ElementId string
-		Id        int64
-	}
 	var idlist []Id
 	for _, v := range all.Lgs {
-		idlist = append(idlist, Id{
-			ElementId: v.ElementId,
-			Id:        v.Id,
-		})
-	}
-	for _, v := range all.Ws {
-		idlist = append(idlist, Id{
-			ElementId: v.ElementId,
-			Id:        v.Id,
-		})
-	}
-	for _, v := range all.Ios.In {
 		idlist = append(idlist, Id{
 			ElementId: v.ElementId,
 			Id:        v.Id,
@@ -57,4 +41,42 @@ func TestXOR(t *testing.T) {
 		log.Fatalln(err)
 	}
 	fmt.Println(gates)
+	key := make(map[string]bool)
+	for i, g := range gates {
+		b, err := utils.Choice([]bool{true, false})
+		if err != nil {
+			panic(err)
+		}
+		keystring := fmt.Sprintf("key_%v", i)
+		key[keystring] = b
+		pres, err := GetGatePredecessorNodes(ctx, driver, "neo4j", g)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(i)
+		if len(pres.IOaR) != 0 {
+			fmt.Println(pres.IOaR)
+		}
+		if len(pres.WaR) != 0 {
+			fmt.Println(pres.WaR)
+		}
+	}
+
+}
+
+func TestXorLock(t *testing.T) {
+	ctx := context.Background()
+	dbUri := "neo4j://localhost"
+	dbUser := "neo4j"
+	dbPassword := "secretgraph"
+	driver, err := neo4j.NewDriverWithContext(
+		dbUri,
+		neo4j.BasicAuth(dbUser, dbPassword, ""))
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer driver.Close(ctx)
+	if err = XorLock(ctx, driver, "neo4j", 2); err != nil {
+		log.Fatalln(err)
+	}
 }

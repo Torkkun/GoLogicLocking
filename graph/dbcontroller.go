@@ -22,11 +22,11 @@ func LGtoIN(ctx context.Context, driver neo4j.DriverWithContext, dbname string, 
 	ioval, bool := isIO(declmaps.IOPorts, portname)
 	if bool {
 		gio := GateIO{
-			Gate: LogicGateNode{
-				GateType: lgmap[atnum].GateType,
+			Gate: &LogicGateNode{
+				GateType: string(lgmap[atnum].GateType),
 				At:       lgmap[atnum].At,
 			},
-			Io: IONode{
+			Io: &IONode{
 				Type: string(ioval.Type),
 				Name: ioval.Name,
 			},
@@ -41,11 +41,11 @@ func LGtoIN(ctx context.Context, driver neo4j.DriverWithContext, dbname string, 
 	wireval, bool := isWire(declmaps.Wires, portname)
 	if bool {
 		gwire := GateWire{
-			Gate: LogicGateNode{
-				GateType: lgmap[atnum].GateType,
+			Gate: &LogicGateNode{
+				GateType: string(lgmap[atnum].GateType),
 				At:       lgmap[atnum].At,
 			},
-			Wire: WireNode{
+			Wire: &WireNode{
 				Name: wireval.Name,
 			},
 			At: atnum,
@@ -62,11 +62,11 @@ func OUTtoLG(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 	ioval, bool := isIO(declmaps.IOPorts, portname)
 	if bool {
 		gio := GateIO{
-			Gate: LogicGateNode{
-				GateType: lgmap[atnum].GateType,
+			Gate: &LogicGateNode{
+				GateType: string(lgmap[atnum].GateType),
 				At:       lgmap[atnum].At,
 			},
-			Io: IONode{
+			Io: &IONode{
 				Type: string(ioval.Type),
 				Name: ioval.Name,
 			},
@@ -81,11 +81,11 @@ func OUTtoLG(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 	wireval, bool := isWire(declmaps.Wires, portname)
 	if bool {
 		gwire := GateWire{
-			Gate: LogicGateNode{
-				GateType: lgmap[atnum].GateType,
+			Gate: &LogicGateNode{
+				GateType: string(lgmap[atnum].GateType),
 				At:       lgmap[atnum].At,
 			},
-			Wire: WireNode{
+			Wire: &WireNode{
 				Name: wireval.Name,
 			},
 			At: atnum,
@@ -156,7 +156,9 @@ func SeparateIOType(allio map[string]*GetNeo4JIONode) (*IONodes, error) {
 }
 
 // 親ノードを取得
+// A <- (B) ,Get "B" Node
 func Predecessors() {}
 
 // 子ノードを取得
+// (C) <- A ,Get "C" Node
 func Successors() {}

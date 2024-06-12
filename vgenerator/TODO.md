@@ -1,0 +1,5 @@
+Pyverilog
+circuitgraph
+NEOS
+あたりのverilog genaratorがある
+text/tmplateを使って構文を当てはめていく感じ
