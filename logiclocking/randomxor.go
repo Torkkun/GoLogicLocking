@@ -36,6 +36,11 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 		})
 	}
 
+	if len(idlist) < keylen {
+		err = fmt.Errorf("ERROR:to much keylength, plese input less than %v", len(idlist))
+		return err
+	}
+
 	gates, err := utils.Sample(idlist, keylen)
 	if err != nil {
 		return err
