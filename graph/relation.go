@@ -72,6 +72,26 @@ func (lgi *LockGateIO) LLGatetoIO(ctx context.Context, driver neo4j.DriverWithCo
 	return nil
 }
 
+func (lgi *LockGateIO) LLGatetoIOByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+	_, err := neo4j.ExecuteQuery(ctx, driver, `
+		MATCH (io:IO {type: $io_type, name: $io_name}), (lg:LLGate)
+		WHERE elementId(lg)=$element_id
+		MERGE (io)<-[:LLGtoIO]-(lg)
+		`,
+		map[string]any{
+			"io_type":    lgi.Io.Type,
+			"io_name":    lgi.Io.Name,
+			"element_id": lgi.Gate.ElementId,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
+	if err != nil {
+		err = fmt.Errorf("MERGE LLGatetoIO Error:%v", err)
+		return err
+	}
+	return nil
+}
+
 // IO(IN) <- Gateのリレーションを取得
 func (io *IONode) GetLGtoIORelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
@@ -112,7 +132,7 @@ func (gi *GateIO) IOtoGate(ctx context.Context, driver neo4j.DriverWithContext, 
 // LockingGate <- IO(OUT)
 func (lgi *LockGateIO) IOtoLLGateByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH (lg:Gate), (io:IO {type: $io_type, name: $io_name})
+		`MATCH (lg:LLGate), (io:IO {type: $io_type, name: $io_name})
 		WHERE elementId(lg)=$element_id
 		MERGE (lg)<-[:IOtoLLG]-(io)`,
 		map[string]any{
@@ -426,6 +446,25 @@ func (llgg *LLGateGate) LLGatetoGate(ctx context.Context, driver neo4j.DriverWit
 			"lg_type": llgg.LLGN.GateType,
 			"ll_type": llgg.LLGN.LockType,
 			"name":    llgg.LLGN.Name,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("MERGE LLGatetoGate Error:%v", err)
+		return err
+	}
+	return nil
+}
+
+func (llgg *LLGateGate) LLGatetoGateElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+	_, err := neo4j.ExecuteQuery(ctx, driver,
+		`MATCH (g:Gate {type: $g_type, at: $g_at}), (lg:LLGate)
+		WHERE elementId(lg)=$element_id
+		MERGE (g)<-[:LLGtoG]-(lg)`,
+		map[string]any{
+			"g_type":     llgg.LGN.GateType,
+			"g_at":       llgg.LGN.At,
+			"element_id": llgg.LLGN.ElementId,
 		},
 		neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase(dbname))

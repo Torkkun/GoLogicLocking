@@ -58,7 +58,7 @@ type LockGateNode struct {
 
 func (lg *LockGateNode) CreateLockingGateNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (string, error) {
 	result, err := neo4j.ExecuteQuery(ctx, driver,
-		`CREATE (g:Gate {type: $type, ll: $ll})
+		`CREATE (g:LLGate {type: $type, ll: $ll})
 		RETURN g`,
 		map[string]any{
 			"type": lg.GateType,

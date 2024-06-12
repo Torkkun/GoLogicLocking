@@ -118,7 +118,7 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 		newLGtoIO := new(graph.LockGateIO)
 		newLGtoIO.Gate = newL
 		newLGtoIO.Io = newio
-		if err = newLGtoIO.LLGatetoIO(ctx, driver, dbname); err != nil {
+		if err = newLGtoIO.LLGatetoIOByElementId(ctx, driver, dbname); err != nil {
 			return err
 		}
 		// xorゲートと元のゲートと接続
@@ -126,7 +126,7 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 		newLgtoG := new(graph.LLGateGate)
 		newLgtoG.LGN = funin
 		newLgtoG.LLGN = newL
-		if err = newLgtoG.LLGatetoGate(ctx, driver, dbname); err != nil {
+		if err = newLgtoG.LLGatetoGateElementId(ctx, driver, dbname); err != nil {
 			return err
 		}
 	}
