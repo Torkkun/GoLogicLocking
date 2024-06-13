@@ -1,0 +1,20 @@
+module {{ .ModuleName }} ({{ portListElement .PortList }});
+{{ with $v := .Parameter }}
+    {{ parametersDeclElement $v }}
+{{ end }}
+{{ with $v := .PortList }}
+    {{ portsDeclElement $v }}
+{{ end }}
+{{ with $v := .Register }}
+    {{ registersDeclElement $v }}
+{{ end }}
+{{ with $v := .EventDecl }}
+    {{ eventDeclElement $v }}
+{{ end }}
+{{ with $v := .NetDecl }}
+    {{ netDeclElement $v }}
+{{ end }}
+{{ with $v := .PremitiveDecl }}
+    {{ premitiveDeclElement $v }}
+{{ end }}
+endmodule

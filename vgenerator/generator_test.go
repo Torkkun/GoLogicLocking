@@ -16,11 +16,11 @@ func TestStringTest(t *testing.T) {
 	list := []string{"A", "B", "C", "D"}
 
 	val := struct {
-		Module string
-		IO     []string
+		ModuleName string
+		PortList   []string
 	}{
-		Module: mname,
-		IO:     list,
+		ModuleName: mname,
+		PortList:   list,
 	}
 
 	funcmap := template.FuncMap{
@@ -46,6 +46,19 @@ func TestStringTest(t *testing.T) {
 	}
 
 	if err := tpl.Execute(os.Stdout, val); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func TestText(t *testing.T) {
+	val := struct {
+		ModuleName string
+		PortList   []string
+	}{
+		ModuleName: "test_module",
+		PortList:   []string{"A", "B", "C", "D"},
+	}
+	if err := NewGenerator(val, true); err != nil {
 		log.Fatalln(err)
 	}
 }

@@ -1,1 +1,0 @@
-module {{.module_name}} ({{ range .slice }} {{- .}} {{ end }} );

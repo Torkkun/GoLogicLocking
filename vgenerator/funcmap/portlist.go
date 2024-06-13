@@ -2,17 +2,10 @@ package funcmap
 
 import (
 	"fmt"
-	"html/template"
 )
 
-func NewFuncMap() template.FuncMap {
-	funcMap := template.FuncMap{
-		"argElement": argElement,
-	}
-	return funcMap
-}
-
-func argElement(io []string) string {
+func portListElement(io []string) string {
+	// ( 引数への変換 );
 	var arg string
 	for i, v := range io {
 		if len(io)-1 == i {
