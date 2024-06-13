@@ -17,11 +17,6 @@ type Id struct {
 func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string, keylen int) (map[string]bool, error) {
 	// db側でコピー（Cyperクエリのバックアップクエリ）
 
-	// ノード数 - アウトプットの数でロック用のゲートを作成
-	//  - （ランダムにXORとXNORのゲート情報を作成していると思われる）
-
-	// 上のゲートをひとつづつ取り出し、キーリスト（map）にてTrueまたはFalseを選択
-	//  - circuitgraphのchoicesとsample関数をチラ見する
 	all, err := graph.GetAllNodes(ctx, driver, dbname)
 	if err != nil {
 		return nil, err
