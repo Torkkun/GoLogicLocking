@@ -1,7 +1,6 @@
 package vgenerator
 
 import (
-	"fmt"
 	"goll/vgenerator/funcmap"
 	"os"
 	"text/template"
@@ -19,7 +18,14 @@ func NewGenerator(val any, dryrun bool) error {
 			return err
 		}
 	} else {
-		return fmt.Errorf("not yet implement")
+		file, err := os.Create("test.v")
+		if err != nil {
+			return err
+		}
+		if err := tpl.Execute(file, val); err != nil {
+			return err
+		}
+
 	}
 	return nil
 }

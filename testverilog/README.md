@@ -44,6 +44,14 @@ $ techmap; opt
 $ write_verilog synth.v
 ```
 ##
+edifまたは、jsonに出力可能
+```shell
+# json out
+$ write_json tmp.json
+# edif can recognized vivado
+$ write_edif tmp
+
+```
 
 synthesisscript
 ```shell

@@ -70,3 +70,15 @@ func Sample[T any](in []T, size int) ([]T, error) {
 
 	return out, nil
 }
+
+func WriteSpace() string {
+	return " "
+}
+
+func WriteIndentTab() string {
+	return "  "
+}
+
+func WriteNewLine() string {
+	return "\n"
+}

@@ -2,6 +2,7 @@ package vgenerator
 
 import (
 	"fmt"
+	"goll/vgenerator/funcmap"
 	"log"
 	"os"
 	"testing"
@@ -50,15 +51,46 @@ func TestStringTest(t *testing.T) {
 	}
 }
 
+var val = struct {
+	ModuleName    string
+	PortList      []string
+	Parameter     []string // not implement
+	PortDecl      []*funcmap.PortDecl
+	Register      []string // not implement
+	EventDecl     []string // not implement
+	NetDecl       []string // not implement
+	PremitiveDecl []string // not implement
+}{
+	ModuleName: "test_module",
+	PortList:   []string{"A", "B", "C", "D"},
+}
+
 func TestText(t *testing.T) {
-	val := struct {
-		ModuleName string
-		PortList   []string
-	}{
-		ModuleName: "test_module",
-		PortList:   []string{"A", "B", "C", "D"},
-	}
 	if err := NewGenerator(val, true); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func TestPortListElement(t *testing.T) {
+	val.PortDecl = []*funcmap.PortDecl{
+		{
+			PortType:   funcmap.Input,
+			SignalName: "A",
+		},
+		{
+			PortType:   funcmap.Input,
+			SignalName: "B",
+		},
+		{
+			PortType:   funcmap.Input,
+			SignalName: "C",
+		},
+		{
+			PortType:   funcmap.Output,
+			SignalName: "D",
+		},
+	}
+	if err := NewGenerator(val, false); err != nil {
 		log.Fatalln(err)
 	}
 }

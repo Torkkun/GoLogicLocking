@@ -1,0 +1,3084 @@
+{
+  "creator": "Yosys 0.40+50 (git sha1 0f9ee20ea, g++ 11.4.0-1ubuntu1~22.04 -fPIC -Os)",
+  "modules": {
+    "blink": {
+      "attributes": {
+        "hdlname": "blink",
+        "top": "00000000000000000000000000000001",
+        "src": "ltika2.v:1.1-22.10"
+      },
+      "parameter_default_values": {
+        "CNT_1SEC": "111011100110101100100111111"
+      },
+      "ports": {
+        "CLK": {
+          "direction": "input",
+          "bits": [ 2 ]
+        },
+        "OUT": {
+          "direction": "output",
+          "bits": [ 3, 3, 3, 3 ]
+        }
+      },
+      "cells": {
+        "$auto$ff.cc:266:slice$162": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 4 ],
+            "Q": [ 5 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$163": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 7 ],
+            "Q": [ 8 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$164": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 9 ],
+            "Q": [ 10 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$165": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 11 ],
+            "Q": [ 12 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$166": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 13 ],
+            "Q": [ 14 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$167": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 15 ],
+            "Q": [ 16 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$168": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 17 ],
+            "Q": [ 18 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$169": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 19 ],
+            "Q": [ 20 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$170": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 21 ],
+            "Q": [ 22 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$171": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 23 ],
+            "Q": [ 24 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$172": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 25 ],
+            "Q": [ 26 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$173": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 27 ],
+            "Q": [ 28 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$174": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 29 ],
+            "Q": [ 30 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$175": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 31 ],
+            "Q": [ 32 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$176": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 33 ],
+            "Q": [ 34 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$177": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 35 ],
+            "Q": [ 36 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$178": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 37 ],
+            "Q": [ 38 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$179": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 39 ],
+            "Q": [ 40 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$180": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 41 ],
+            "Q": [ 42 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$181": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 43 ],
+            "Q": [ 44 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$182": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 45 ],
+            "Q": [ 46 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$183": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 47 ],
+            "Q": [ 48 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$184": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 49 ],
+            "Q": [ 50 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$185": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 51 ],
+            "Q": [ 52 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$186": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 53 ],
+            "Q": [ 54 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$187": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 55 ],
+            "Q": [ 56 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$188": {
+          "hide_name": 1,
+          "type": "$_SDFF_PN0_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "Q": "output",
+            "R": "input"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 57 ],
+            "Q": [ 58 ],
+            "R": [ 6 ]
+          }
+        },
+        "$auto$ff.cc:266:slice$189": {
+          "hide_name": 1,
+          "type": "$_DFFE_PN_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:10.1-18.4"
+          },
+          "port_directions": {
+            "C": "input",
+            "D": "input",
+            "E": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "C": [ 2 ],
+            "D": [ 59 ],
+            "E": [ 6 ],
+            "Q": [ 3 ]
+          }
+        },
+        "$auto$opt_expr.cc:613:replace_const_cells$604": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 46 ],
+            "Y": [ 60 ]
+          }
+        },
+        "$auto$opt_expr.cc:613:replace_const_cells$606": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 48 ],
+            "Y": [ 61 ]
+          }
+        },
+        "$auto$opt_expr.cc:613:replace_const_cells$608": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 50 ],
+            "Y": [ 62 ]
+          }
+        },
+        "$auto$opt_expr.cc:613:replace_const_cells$610": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 54 ],
+            "Y": [ 63 ]
+          }
+        },
+        "$auto$opt_expr.cc:613:replace_const_cells$612": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 56 ],
+            "Y": [ 64 ]
+          }
+        },
+        "$auto$opt_expr.cc:613:replace_const_cells$614": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 58 ],
+            "Y": [ 65 ]
+          }
+        },
+        "$auto$opt_expr.cc:613:replace_const_cells$616": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 5 ],
+            "Y": [ 4 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$126": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 4 ],
+            "B": [ 66 ],
+            "Y": [ 67 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$127": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 68 ],
+            "B": [ 69 ],
+            "Y": [ 70 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$128": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 71 ],
+            "B": [ 72 ],
+            "Y": [ 73 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$129": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18 ],
+            "B": [ 20 ],
+            "Y": [ 74 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$130": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 75 ],
+            "B": [ 24 ],
+            "Y": [ 76 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$131": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26 ],
+            "B": [ 77 ],
+            "Y": [ 78 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$132": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 79 ],
+            "B": [ 32 ],
+            "Y": [ 80 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$133": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 81 ],
+            "B": [ 36 ],
+            "Y": [ 82 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$134": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 83 ],
+            "B": [ 84 ],
+            "Y": [ 85 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$135": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 42 ],
+            "B": [ 44 ],
+            "Y": [ 86 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$136": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 60 ],
+            "B": [ 61 ],
+            "Y": [ 87 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$137": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 62 ],
+            "B": [ 52 ],
+            "Y": [ 88 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$138": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 63 ],
+            "B": [ 64 ],
+            "Y": [ 89 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$140": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 67 ],
+            "B": [ 70 ],
+            "Y": [ 90 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$141": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 73 ],
+            "B": [ 74 ],
+            "Y": [ 91 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$142": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 76 ],
+            "B": [ 78 ],
+            "Y": [ 92 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$143": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 80 ],
+            "B": [ 82 ],
+            "Y": [ 93 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$144": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 85 ],
+            "B": [ 86 ],
+            "Y": [ 94 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$145": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 87 ],
+            "B": [ 88 ],
+            "Y": [ 95 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$146": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 89 ],
+            "B": [ 65 ],
+            "Y": [ 96 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$148": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 90 ],
+            "B": [ 91 ],
+            "Y": [ 97 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$149": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 92 ],
+            "B": [ 93 ],
+            "Y": [ 98 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$150": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 94 ],
+            "B": [ 95 ],
+            "Y": [ 99 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$152": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 97 ],
+            "B": [ 98 ],
+            "Y": [ 100 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$153": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 99 ],
+            "B": [ 96 ],
+            "Y": [ 101 ]
+          }
+        },
+        "$auto$simplemap.cc:126:simplemap_reduce$155": {
+          "hide_name": 1,
+          "type": "$_OR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:11.9-11.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 100 ],
+            "B": [ 101 ],
+            "Y": [ 6 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$158": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:13.18-13.24"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 3 ],
+            "Y": [ 59 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$443": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 8 ],
+            "Y": [ 66 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$444": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "Y": [ 68 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$445": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 12 ],
+            "Y": [ 69 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$446": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 14 ],
+            "Y": [ 71 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$447": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 16 ],
+            "Y": [ 72 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$450": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 22 ],
+            "Y": [ 75 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$453": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 28 ],
+            "Y": [ 77 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$454": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 30 ],
+            "Y": [ 79 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$456": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 34 ],
+            "Y": [ 81 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$458": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 38 ],
+            "Y": [ 83 ]
+          }
+        },
+        "$auto$simplemap.cc:38:simplemap_not$459": {
+          "hide_name": 1,
+          "type": "$_NOT_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:279.31-279.37"
+          },
+          "port_directions": {
+            "A": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 40 ],
+            "Y": [ 84 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$196": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 8 ],
+            "B": [ 5 ],
+            "Y": [ 7 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$197": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "B": [ 102 ],
+            "Y": [ 9 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$198": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 12 ],
+            "B": [ 103 ],
+            "Y": [ 11 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$199": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 14 ],
+            "B": [ 104 ],
+            "Y": [ 13 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$200": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 16 ],
+            "B": [ 105 ],
+            "Y": [ 15 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$201": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18 ],
+            "B": [ 106 ],
+            "Y": [ 17 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$202": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 20 ],
+            "B": [ 107 ],
+            "Y": [ 19 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$203": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 22 ],
+            "B": [ 108 ],
+            "Y": [ 21 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$204": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 24 ],
+            "B": [ 109 ],
+            "Y": [ 23 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$205": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26 ],
+            "B": [ 110 ],
+            "Y": [ 25 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$206": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 28 ],
+            "B": [ 111 ],
+            "Y": [ 27 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$207": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 30 ],
+            "B": [ 112 ],
+            "Y": [ 29 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$208": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 32 ],
+            "B": [ 113 ],
+            "Y": [ 31 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$209": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 34 ],
+            "B": [ 114 ],
+            "Y": [ 33 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$210": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 36 ],
+            "B": [ 115 ],
+            "Y": [ 35 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$211": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 38 ],
+            "B": [ 116 ],
+            "Y": [ 37 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$212": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 40 ],
+            "B": [ 117 ],
+            "Y": [ 39 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$213": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 42 ],
+            "B": [ 118 ],
+            "Y": [ 41 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$214": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 44 ],
+            "B": [ 119 ],
+            "Y": [ 43 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$215": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 46 ],
+            "B": [ 120 ],
+            "Y": [ 45 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$216": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 48 ],
+            "B": [ 121 ],
+            "Y": [ 47 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$217": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 50 ],
+            "B": [ 122 ],
+            "Y": [ 49 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$218": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 52 ],
+            "B": [ 123 ],
+            "Y": [ 51 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$219": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 54 ],
+            "B": [ 124 ],
+            "Y": [ 53 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$220": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 56 ],
+            "B": [ 125 ],
+            "Y": [ 55 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$221": {
+          "hide_name": 1,
+          "type": "$_XOR_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:289.13-289.25"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 58 ],
+            "B": [ 126 ],
+            "Y": [ 57 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$470": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 8 ],
+            "B": [ 5 ],
+            "Y": [ 102 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$483": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 127 ],
+            "B": [ 102 ],
+            "Y": [ 104 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$489": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 128 ],
+            "B": [ 104 ],
+            "Y": [ 108 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$492": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:240.19-240.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 129 ],
+            "B": [ 108 ],
+            "Y": [ 116 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$493": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 12 ],
+            "B": [ 10 ],
+            "Y": [ 127 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$494": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 16 ],
+            "B": [ 14 ],
+            "Y": [ 130 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$495": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 20 ],
+            "B": [ 18 ],
+            "Y": [ 131 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$496": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 24 ],
+            "B": [ 22 ],
+            "Y": [ 132 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$497": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 28 ],
+            "B": [ 26 ],
+            "Y": [ 133 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$498": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 32 ],
+            "B": [ 30 ],
+            "Y": [ 134 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$499": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 36 ],
+            "B": [ 34 ],
+            "Y": [ 135 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$500": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 40 ],
+            "B": [ 38 ],
+            "Y": [ 136 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$501": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 44 ],
+            "B": [ 42 ],
+            "Y": [ 137 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$502": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 48 ],
+            "B": [ 46 ],
+            "Y": [ 138 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$503": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 52 ],
+            "B": [ 50 ],
+            "Y": [ 139 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$504": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 56 ],
+            "B": [ 54 ],
+            "Y": [ 140 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$505": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 131 ],
+            "B": [ 130 ],
+            "Y": [ 128 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$506": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 133 ],
+            "B": [ 132 ],
+            "Y": [ 141 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$507": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 135 ],
+            "B": [ 134 ],
+            "Y": [ 142 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$508": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 137 ],
+            "B": [ 136 ],
+            "Y": [ 143 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$509": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 139 ],
+            "B": [ 138 ],
+            "Y": [ 144 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$510": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 142 ],
+            "B": [ 141 ],
+            "Y": [ 129 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$511": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 144 ],
+            "B": [ 143 ],
+            "Y": [ 145 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$512": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 145 ],
+            "B": [ 116 ],
+            "Y": [ 124 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$513": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 141 ],
+            "B": [ 108 ],
+            "Y": [ 112 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$514": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 143 ],
+            "B": [ 116 ],
+            "Y": [ 120 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$515": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 130 ],
+            "B": [ 104 ],
+            "Y": [ 106 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$516": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 132 ],
+            "B": [ 108 ],
+            "Y": [ 110 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$517": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 134 ],
+            "B": [ 112 ],
+            "Y": [ 114 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$518": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 136 ],
+            "B": [ 116 ],
+            "Y": [ 118 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$519": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 138 ],
+            "B": [ 120 ],
+            "Y": [ 122 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$520": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 140 ],
+            "B": [ 124 ],
+            "Y": [ 126 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$521": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 10 ],
+            "B": [ 102 ],
+            "Y": [ 103 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$522": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 14 ],
+            "B": [ 104 ],
+            "Y": [ 105 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$523": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 18 ],
+            "B": [ 106 ],
+            "Y": [ 107 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$524": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 22 ],
+            "B": [ 108 ],
+            "Y": [ 109 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$525": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 26 ],
+            "B": [ 110 ],
+            "Y": [ 111 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$526": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 30 ],
+            "B": [ 112 ],
+            "Y": [ 113 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$527": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 34 ],
+            "B": [ 114 ],
+            "Y": [ 115 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$528": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 38 ],
+            "B": [ 116 ],
+            "Y": [ 117 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$529": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 42 ],
+            "B": [ 118 ],
+            "Y": [ 119 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$530": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 46 ],
+            "B": [ 120 ],
+            "Y": [ 121 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$531": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 50 ],
+            "B": [ 122 ],
+            "Y": [ 123 ]
+          }
+        },
+        "$auto$simplemap.cc:75:simplemap_bitop$532": {
+          "hide_name": 1,
+          "type": "$_AND_",
+          "parameters": {
+          },
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:248.19-248.41"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 54 ],
+            "B": [ 124 ],
+            "Y": [ 125 ]
+          }
+        }
+      },
+      "netnames": {
+        "$auto$rtlil.cc:2684:NotGate$583": {
+          "hide_name": 1,
+          "bits": [ 66 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$585": {
+          "hide_name": 1,
+          "bits": [ 68 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$587": {
+          "hide_name": 1,
+          "bits": [ 69 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$589": {
+          "hide_name": 1,
+          "bits": [ 71 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$591": {
+          "hide_name": 1,
+          "bits": [ 72 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$593": {
+          "hide_name": 1,
+          "bits": [ 75 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$595": {
+          "hide_name": 1,
+          "bits": [ 77 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$597": {
+          "hide_name": 1,
+          "bits": [ 79 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$599": {
+          "hide_name": 1,
+          "bits": [ 81 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$601": {
+          "hide_name": 1,
+          "bits": [ 83 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$603": {
+          "hide_name": 1,
+          "bits": [ 84 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$605": {
+          "hide_name": 1,
+          "bits": [ 60 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$607": {
+          "hide_name": 1,
+          "bits": [ 61 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$609": {
+          "hide_name": 1,
+          "bits": [ 62 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$611": {
+          "hide_name": 1,
+          "bits": [ 63 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$613": {
+          "hide_name": 1,
+          "bits": [ 64 ],
+          "attributes": {
+          }
+        },
+        "$auto$rtlil.cc:2684:NotGate$615": {
+          "hide_name": 1,
+          "bits": [ 65 ],
+          "attributes": {
+          }
+        },
+        "$auto$simplemap.cc:117:simplemap_reduce$125": {
+          "hide_name": 1,
+          "bits": [ 67, 70, 73, 74, 76, 78, 80, 82, 85, 86, 87, 88, 89 ],
+          "attributes": {
+          }
+        },
+        "$auto$simplemap.cc:117:simplemap_reduce$139": {
+          "hide_name": 1,
+          "bits": [ 90, 91, 92, 93, 94, 95, 96 ],
+          "attributes": {
+          }
+        },
+        "$auto$simplemap.cc:117:simplemap_reduce$147": {
+          "hide_name": 1,
+          "bits": [ 97, 98, 99 ],
+          "attributes": {
+          }
+        },
+        "$auto$simplemap.cc:117:simplemap_reduce$151": {
+          "hide_name": 1,
+          "bits": [ 100, 101 ],
+          "attributes": {
+          }
+        },
+        "$auto$simplemap.cc:246:simplemap_eqne$123": {
+          "hide_name": 1,
+          "bits": [ 6 ],
+          "attributes": {
+          }
+        },
+        "$not$ltika2.v:13$3_Y": {
+          "hide_name": 1,
+          "bits": [ 59 ],
+          "attributes": {
+            "src": "ltika2.v:13.18-13.24"
+          }
+        },
+        "$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.CO": {
+          "hide_name": 1,
+          "bits": [ 5, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 146 ],
+          "attributes": {
+            "force_downto": "00000000000000000000000000000001",
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:274.23-274.25",
+            "unused_bits": "26"
+          }
+        },
+        "$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.X": {
+          "hide_name": 1,
+          "bits": [ 4, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58 ],
+          "attributes": {
+            "force_downto": "00000000000000000000000000000001",
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:270.23-270.24"
+          }
+        },
+        "$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.Y": {
+          "hide_name": 1,
+          "bits": [ 4, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35, 37, 39, 41, 43, 45, 47, 49, 51, 53, 55, 57 ],
+          "attributes": {
+            "force_downto": "00000000000000000000000000000001",
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:270.26-270.27"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$285_Y": {
+          "hide_name": 1,
+          "bits": [ 127 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$288_Y": {
+          "hide_name": 1,
+          "bits": [ 130 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$291_Y": {
+          "hide_name": 1,
+          "bits": [ 131 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$294_Y": {
+          "hide_name": 1,
+          "bits": [ 132 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$297_Y": {
+          "hide_name": 1,
+          "bits": [ 133 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$300_Y": {
+          "hide_name": 1,
+          "bits": [ 134 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$303_Y": {
+          "hide_name": 1,
+          "bits": [ 135 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$306_Y": {
+          "hide_name": 1,
+          "bits": [ 136 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$309_Y": {
+          "hide_name": 1,
+          "bits": [ 137 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$312_Y": {
+          "hide_name": 1,
+          "bits": [ 138 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$315_Y": {
+          "hide_name": 1,
+          "bits": [ 139 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$318_Y": {
+          "hide_name": 1,
+          "bits": [ 140 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$324_Y": {
+          "hide_name": 1,
+          "bits": [ 128 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$327_Y": {
+          "hide_name": 1,
+          "bits": [ 141 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$330_Y": {
+          "hide_name": 1,
+          "bits": [ 142 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$333_Y": {
+          "hide_name": 1,
+          "bits": [ 143 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$336_Y": {
+          "hide_name": 1,
+          "bits": [ 144 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$342_Y": {
+          "hide_name": 1,
+          "bits": [ 129 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "$techmap$techmap$add$ltika2.v:16$4.$auto$alumacc.cc:485:replace_alu$159.lcu.$and$/usr/local/bin/../share/yosys/techmap.v:241$345_Y": {
+          "hide_name": 1,
+          "bits": [ 145 ],
+          "attributes": {
+            "src": "ltika2.v:16.16-16.27|/usr/local/bin/../share/yosys/techmap.v:286.27-286.69|/usr/local/bin/../share/yosys/techmap.v:241.12-241.34"
+          }
+        },
+        "CLK": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "ltika2.v:2.11-2.14"
+          }
+        },
+        "OUT": {
+          "hide_name": 0,
+          "bits": [ 3, 3, 3, 3 ],
+          "attributes": {
+            "src": "ltika2.v:3.18-3.21"
+          }
+        },
+        "cnt": {
+          "hide_name": 0,
+          "bits": [ 5, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58 ],
+          "attributes": {
+            "init": "000000000000000000000000000",
+            "src": "ltika2.v:7.12-7.15"
+          }
+        },
+        "onoff": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "init": "0",
+            "src": "ltika2.v:8.5-8.10"
+          }
+        }
+      }
+    }
+  }
+}
