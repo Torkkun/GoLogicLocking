@@ -1,4 +1,4 @@
-package json
+package yosysjson
 
 const (
 	Input  string = "input"

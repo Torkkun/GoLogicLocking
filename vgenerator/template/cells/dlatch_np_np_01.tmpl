@@ -1,0 +1,5 @@
+always @*
+        if ({{ .R }} == {{ .RstLvl }})
+            {{ .Q }} <= {{ .RstVal }};
+        else if ({{ .E }} == {{ .EnLvl }})
+            {{ .Q }} <= {{ .D }};

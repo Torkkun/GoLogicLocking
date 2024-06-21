@@ -1,0 +1,6 @@
+always @({{ .ClkEdge }} {{ .C }})
+        if ( {{ .EN }} == {{ .EnLvl }})
+            if ({{ .R }} == {{ .RstLvl }})
+                {{ .Q }} <= {{ .RstVal }};
+            else
+                {{ .Q }} <= {{ .D }};

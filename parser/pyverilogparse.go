@@ -10,40 +10,7 @@ import (
 	"strings"
 )
 
-type prevType int
-
-const (
-	_ prevType = iota
-	Lvalue
-	Rvalue
-	Gate
-)
-
-type Node struct {
-	In1  string
-	In2  string
-	Gate utils.GateType
-	Out  string
-}
-
-type LogicGate struct {
-	GateType utils.GateType
-	At       int
-}
-
-type Decl struct {
-	//name is key
-	IOPorts map[string]IOPort
-	Wires   map[string]Wire
-}
-
-type ParseResult struct {
-	// relation
-	Nodes        map[int]Node
-	Declarations *Decl
-	LogicGates   map[int]LogicGate
-}
-
+// duplicate
 func NewParse(filename string) ParseResult {
 	file := NewReader(filename)
 	scanner := NewScanner(file)
@@ -109,7 +76,7 @@ func NewParse(filename string) ParseResult {
 			}
 			mapval.Gate = logicgate
 			// Logicgateに加える
-			newLogicGates[at] = LogicGate{GateType: logicgate, At: at}
+			newLogicGates[at] = LogicGate{GateType: logicgate}
 
 			// relationに加える
 			newNodes[at] = mapval
@@ -151,24 +118,6 @@ func NewParse(filename string) ParseResult {
 		LogicGates:   newLogicGates,
 	}
 
-}
-
-type IOPortType string
-
-const (
-	IN  IOPortType = "IN"
-	OUT IOPortType = "OUT"
-)
-
-type IOPort struct {
-	Type IOPortType
-	Name string
-}
-
-type Wire struct {
-	Name string
-	//todo
-	//Width
 }
 
 func (d Decl) parseIOPortlist(declstr []string, list []string) error {

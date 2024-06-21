@@ -1,0 +1,7 @@
+always @({{ .ClkEdge }} {{ .C }}, {{ .RstEdge }} {{ .R }}, {{ .SetEdge }} {{ .S }})
+        if ({{ .R }} == {{ .RstLvl }})
+            {{ .Q }} <= 0;
+        else if ({{ .S }} == {{ .SetLvl }})
+            {{ .Q }} <= 1;
+        else
+            {{ .Q }} <= {{ .D }};
