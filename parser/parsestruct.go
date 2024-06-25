@@ -20,6 +20,7 @@ type Node struct {
 
 type LogicGate struct {
 	GateType utils.GateType
+	At       int
 }
 
 type Decl struct {

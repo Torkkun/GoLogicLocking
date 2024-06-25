@@ -6,6 +6,7 @@ package cmd
 import (
 	"context"
 	"goll/graph"
+	"goll/graph/verpyverilog"
 	"goll/parser"
 	"log"
 
@@ -34,7 +35,7 @@ to quickly create a Cobra application.`,
 		defer driver.Driver.Close(ctx)
 		var err error
 		for _, io := range parseresult.Declarations.IOPorts {
-			neoio := graph.IONode{
+			neoio := verpyverilog.IONode{
 				Type: string(io.Type),
 				Name: io.Name,
 			}
@@ -43,7 +44,7 @@ to quickly create a Cobra application.`,
 			}
 		}
 		for _, wire := range parseresult.Declarations.Wires {
-			neowire := graph.WireNode{
+			neowire := verpyverilog.WireNode{
 				Name: wire.Name,
 			}
 			if err = neowire.CreateWireNode(ctx, driver.Driver, dbname); err != nil {
@@ -51,7 +52,7 @@ to quickly create a Cobra application.`,
 			}
 		}
 		for _, logicgate := range parseresult.LogicGates {
-			gate := graph.LogicGateNode{
+			gate := verpyverilog.LogicGateNode{
 				GateType: string(logicgate.GateType),
 				At:       logicgate.At,
 			}
@@ -62,17 +63,17 @@ to quickly create a Cobra application.`,
 		for at, relation := range parseresult.Nodes {
 			// i1 <- lg, i2 <- lg, lg <- out
 			// i1 <- lg
-			if err := graph.LGtoIN(ctx, driver.Driver, dbname, relation.In1, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
+			if err := verpyverilog.LGtoIN(ctx, driver.Driver, dbname, relation.In1, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
 				log.Fatalln(err)
 			}
 
 			// i2 <- lg
-			if err := graph.LGtoIN(ctx, driver.Driver, dbname, relation.In2, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
+			if err := verpyverilog.LGtoIN(ctx, driver.Driver, dbname, relation.In2, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
 				log.Fatalln(err)
 			}
 
 			// lg <- out
-			if err := graph.OUTtoLG(ctx, driver.Driver, dbname, relation.Out, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
+			if err := verpyverilog.OUTtoLG(ctx, driver.Driver, dbname, relation.Out, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
 				log.Fatalln(err)
 			}
 		}

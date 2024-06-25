@@ -3,6 +3,7 @@ package graph
 import (
 	"context"
 	"fmt"
+	"goll/graph/verpyverilog"
 	"log"
 	"testing"
 
@@ -77,7 +78,7 @@ func TestGetLG(t *testing.T) {
 		log.Fatalln(err)
 	}
 	defer driver.Close(ctx)
-	lgn, err := GetAllLogicNodes(ctx, driver, "neo4j")
+	lgn, err := verpyverilog.GetAllLogicNodes(ctx, driver, "neo4j")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -98,7 +99,7 @@ func TestGetIO(t *testing.T) {
 		panic(err)
 	}
 	defer driver.Close(ctx)
-	ion, err := GetAllIONode(ctx, driver, "neo4j")
+	ion, err := verpyverilog.GetAllIONode(ctx, driver, "neo4j")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -119,7 +120,7 @@ func TestGetWire(t *testing.T) {
 		panic(err)
 	}
 	defer driver.Close(ctx)
-	wn, err := GetAllWireNodes(ctx, driver, "neo4j")
+	wn, err := verpyverilog.GetAllWireNodes(ctx, driver, "neo4j")
 	if err != nil {
 		log.Fatalln(err)
 	}

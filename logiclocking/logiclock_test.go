@@ -3,7 +3,7 @@ package logiclocking
 import (
 	"context"
 	"fmt"
-	"goll/graph"
+	"goll/graph/verpyverilog"
 	"goll/utils"
 	"log"
 	"testing"
@@ -24,7 +24,7 @@ func TestXOR(t *testing.T) {
 	}
 	defer driver.Close(ctx)
 
-	all, err := graph.GetAllNodes(ctx, driver, "neo4j")
+	all, err := verpyverilog.GetAllNodes(ctx, driver, "neo4j")
 	if err != nil {
 		log.Fatalln(err)
 	}

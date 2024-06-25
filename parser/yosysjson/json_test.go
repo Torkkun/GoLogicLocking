@@ -8,9 +8,9 @@ import (
 	"testing"
 )
 
-var path1 = "C:\\Users\\onigi\\projects\\GoLogicLocking\\testverilog\\workspace\\fulladd\\testfulladd.json"
-
 func TestParsefromFile(t *testing.T) {
+	var path1 = "C:\\Users\\onigi\\projects\\GoLogicLocking\\testverilog\\workspace\\fulladd\\testfulladd.json"
+
 	file, err := os.ReadFile(path1)
 	if err != nil {
 		log.Fatalln(err)
