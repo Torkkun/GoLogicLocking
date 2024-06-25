@@ -5,22 +5,6 @@ import (
 	"goll/utils"
 )
 
-type PortType string
-
-const (
-	Input  PortType = "input"
-	Output PortType = "output"
-)
-
-type PortDecl struct {
-	PortType PortType
-	BitWidth *struct {
-		MSB int
-		LSB int
-	}
-	SignalName string
-}
-
 func portDeclElement(portdecls []*PortDecl) string {
 	var returnstr string
 	for i, portdecl := range portdecls {
@@ -42,7 +26,9 @@ func portDeclElement(portdecls []*PortDecl) string {
 
 		portdeclstr = utils.WriteIndentTab() + portdeclstr
 		if i != len(portdecls)-1 {
-			portdeclstr = portdeclstr + utils.WriteNewLine()
+			portdeclstr = portdeclstr + utils.WriteSemiColon() + utils.WriteNewLine()
+		} else {
+			portdeclstr = portdeclstr + utils.WriteSemiColon()
 		}
 		returnstr += portdeclstr
 	}

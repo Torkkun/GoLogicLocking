@@ -11,7 +11,7 @@ import (
 
 func TestStringTest(t *testing.T) {
 
-	text := "module {{ .Module }} ({{ argElement .IO }});"
+	text := "module {{ .ModuleName }} ({{ argElement .PortList }});"
 	tpl := template.New("")
 	mname := "test_module"
 	list := []string{"A", "B", "C", "D"}
@@ -56,10 +56,10 @@ var val = struct {
 	PortList      []string
 	Parameter     []string // not implement
 	PortDecl      []*funcmap.PortDecl
-	Register      []string // not implement
-	EventDecl     []string // not implement
-	NetDecl       []string // not implement
-	PremitiveDecl []string // not implement
+	Register      []string           // not implement
+	EventDecl     []string           // not implement
+	NetDecl       []*funcmap.NetDecl // not implement
+	PremitiveDecl []string           // not implement
 }{
 	ModuleName: "test_module",
 	PortList:   []string{"A", "B", "C", "D"},
@@ -71,7 +71,7 @@ func TestText(t *testing.T) {
 	}
 }
 
-func TestPortListElement(t *testing.T) {
+func TestElement(t *testing.T) {
 	val.PortDecl = []*funcmap.PortDecl{
 		{
 			PortType:   funcmap.Input,
@@ -88,6 +88,28 @@ func TestPortListElement(t *testing.T) {
 		{
 			PortType:   funcmap.Output,
 			SignalName: "D",
+		},
+		{
+			PortType: funcmap.Input,
+			BitWidth: &funcmap.BitWidth{
+				MSB: 4,
+				LSB: 0,
+			},
+			SignalName: "E",
+		},
+	}
+	val.NetDecl = []*funcmap.NetDecl{
+		{
+			NetType: funcmap.Wire,
+			NetName: "_1_",
+		},
+		{
+			NetType: funcmap.Wire,
+			BitWidth: &funcmap.BitWidth{
+				MSB: 2,
+				LSB: 0,
+			},
+			NetName: "_2_",
 		},
 	}
 	if err := NewGenerator(val, false); err != nil {

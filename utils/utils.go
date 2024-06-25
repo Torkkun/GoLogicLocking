@@ -82,3 +82,7 @@ func WriteIndentTab() string {
 func WriteNewLine() string {
 	return "\n"
 }
+
+func WriteSemiColon() string {
+	return ";"
+}

@@ -1,8 +1,8 @@
 module {{ .ModuleName }} ({{ portListElement .PortList }});
-{{ range $v := .Parameter }}{{ paramDeclElement $v }}{{ else }}//no parameter{{ end }}
+{{ with $v := .Parameter }}{{ paramDeclElement $v }}{{ else }}//no parameter{{ end }}
 {{ with $v := .PortDecl }}{{ portDeclElement $v }}{{ else }}//no port decl{{ end }}
-{{ range $v := .Register }}{{ registerDeclElement $v }}{{ else }}//no register decl{{ end }}
-{{ range $v := .EventDecl }}{{ eventDeclElement $v }}{{ else }}//no event decl{{ end }}
-{{ range $v := .NetDecl }}{{ netDeclElement $v }}{{ else }}//no net decl{{ end }}
-{{ range $v := .PremitiveDecl }}{{ premitiveDeclElement $v }}{{ else }}//no premitive decl{{ end }}
+{{ with $v := .Register }}{{ registerDeclElement $v }}{{ else }}//no register decl{{ end }}
+{{ with $v := .EventDecl }}{{ eventDeclElement $v }}{{ else }}//no event decl{{ end }}
+{{ with $v := .NetDecl }}{{ netDeclElement $v }}{{ else }}//no net decl{{ end }}
+{{ with $v := .PremitiveDecl }}{{ premitiveDeclElement $v }}{{ else }}//no premitive decl{{ end }}
 endmodule

@@ -1,11 +1,13 @@
 module test_module (A, B, C, D);
 //no parameter
-  input A
-  input B
-  input C
-  output D
+  input A;
+  input B;
+  input C;
+  output D;
+  input [4:0] E;
 //no register decl
 //no event decl
-//no net decl
+  wire _1_;
+  wire [2:0] _2_;
 //no premitive decl
 endmodule
