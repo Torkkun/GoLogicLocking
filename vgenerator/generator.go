@@ -6,7 +6,18 @@ import (
 	"text/template"
 )
 
-func NewGenerator(val any, dryrun bool) error {
+type GenerateData struct {
+	ModuleName string
+	PortList   []string
+	Parameter  []string // not implement
+	PortDecl   []*funcmap.PortDecl
+	Register   []string              // not implement
+	EventDecl  []string              // not implement
+	NetDecl    []*funcmap.NetDecl    // not implement
+	AssignDecl []*funcmap.AssignDecl // not implement
+}
+
+func NewGenerator(val GenerateData, dryrun bool) error {
 	tplmap := funcmap.NewFuncMap()
 	tpl, err := template.New("module.tmpl").Funcs(tplmap).ParseFiles("template/module.tmpl")
 	if err != nil {
