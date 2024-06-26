@@ -9,5 +9,13 @@ module test_module (A, B, C, D);
 //no event decl
   wire _1_;
   wire [2:0] _2_;
-//no premitive decl
+  assign out1 = in1 & in2;
+  assign out1 = ~(in1 & in2);
+  assign out1 = in1 | in2;
+  assign out1 = ~(in1 | in2);
+  assign out1 = in1 ^ in2;
+  assign out1 = ~(in1 ^ in2);
+  assign out1 = in1;
+  assign out1 = ~in1;
+
 endmodule

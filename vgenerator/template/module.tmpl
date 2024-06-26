@@ -4,5 +4,5 @@ module {{ .ModuleName }} ({{ portListElement .PortList }});
 {{ with $v := .Register }}{{ registerDeclElement $v }}{{ else }}//no register decl{{ end }}
 {{ with $v := .EventDecl }}{{ eventDeclElement $v }}{{ else }}//no event decl{{ end }}
 {{ with $v := .NetDecl }}{{ netDeclElement $v }}{{ else }}//no net decl{{ end }}
-{{ with $v := .PremitiveDecl }}{{ premitiveDeclElement $v }}{{ else }}//no premitive decl{{ end }}
+{{ with $v := .AssignDecl }}{{ assignDeclElement $v }}{{ else }}//no premitive decl{{ end }}
 endmodule

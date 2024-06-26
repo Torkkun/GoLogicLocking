@@ -2,6 +2,7 @@ package vgenerator
 
 import (
 	"fmt"
+	"goll/parser/yosysjson"
 	"goll/vgenerator/funcmap"
 	"log"
 	"os"
@@ -52,14 +53,14 @@ func TestStringTest(t *testing.T) {
 }
 
 var val = struct {
-	ModuleName    string
-	PortList      []string
-	Parameter     []string // not implement
-	PortDecl      []*funcmap.PortDecl
-	Register      []string           // not implement
-	EventDecl     []string           // not implement
-	NetDecl       []*funcmap.NetDecl // not implement
-	PremitiveDecl []string           // not implement
+	ModuleName string
+	PortList   []string
+	Parameter  []string // not implement
+	PortDecl   []*funcmap.PortDecl
+	Register   []string              // not implement
+	EventDecl  []string              // not implement
+	NetDecl    []*funcmap.NetDecl    // not implement
+	AssignDecl []*funcmap.AssignDecl // not implement
 }{
 	ModuleName: "test_module",
 	PortList:   []string{"A", "B", "C", "D"},
@@ -110,6 +111,49 @@ func TestElement(t *testing.T) {
 				LSB: 0,
 			},
 			NetName: "_2_",
+		},
+	}
+	testconn1 := funcmap.Logic{
+		Y: "out1",
+		A: "in1",
+		B: "in2",
+	}
+	testconn2 := funcmap.BuforNot{
+		Y: "out1",
+		A: "in1",
+	}
+	val.AssignDecl = []*funcmap.AssignDecl{
+		{
+			ExpressionType: yosysjson.AND,
+			Connection:     testconn1,
+		},
+		{
+			ExpressionType: yosysjson.NAND,
+			Connection:     testconn1,
+		},
+		{
+			ExpressionType: yosysjson.OR,
+			Connection:     testconn1,
+		},
+		{
+			ExpressionType: yosysjson.NOR,
+			Connection:     testconn1,
+		},
+		{
+			ExpressionType: yosysjson.XOR,
+			Connection:     testconn1,
+		},
+		{
+			ExpressionType: yosysjson.XNOR,
+			Connection:     testconn1,
+		},
+		{
+			ExpressionType: yosysjson.BUF,
+			Connection:     testconn2,
+		},
+		{
+			ExpressionType: yosysjson.NOT,
+			Connection:     testconn2,
 		},
 	}
 	if err := NewGenerator(val, false); err != nil {

@@ -2,6 +2,7 @@ package utils
 
 type GateType string
 
+// old
 const (
 	Xor  GateType = "XOR"
 	Xnor GateType = "XNOR"

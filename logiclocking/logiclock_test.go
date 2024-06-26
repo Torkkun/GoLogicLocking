@@ -63,22 +63,3 @@ func TestXOR(t *testing.T) {
 	}
 
 }
-
-func TestXorLock(t *testing.T) {
-	ctx := context.Background()
-	dbUri := "neo4j://localhost"
-	dbUser := "neo4j"
-	dbPassword := "secretgraph"
-	driver, err := neo4j.NewDriverWithContext(
-		dbUri,
-		neo4j.BasicAuth(dbUser, dbPassword, ""))
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer driver.Close(ctx)
-	key, err := XorLock(ctx, driver, "neo4j", 2)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	fmt.Println(key)
-}

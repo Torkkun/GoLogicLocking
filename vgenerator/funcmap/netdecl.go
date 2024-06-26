@@ -3,10 +3,9 @@ package funcmap
 import (
 	"fmt"
 	"goll/utils"
-	"log"
 )
 
-func netDeclElement(netdecls []*NetDecl) string {
+func netDeclElement(netdecls []*NetDecl) (string, error) {
 	var returnstr string
 	for i, netdecl := range netdecls {
 		var netdeclstr string
@@ -14,7 +13,7 @@ func netDeclElement(netdecls []*NetDecl) string {
 		case Wire:
 			netdeclstr = "wire"
 		default:
-			log.Fatalln("This Net Type not undefined")
+			return "", fmt.Errorf("net type not undefined")
 		}
 
 		if netdecl.BitWidth != nil {
@@ -34,5 +33,5 @@ func netDeclElement(netdecls []*NetDecl) string {
 		returnstr += netdeclstr
 	}
 
-	return returnstr
+	return returnstr, nil
 }
