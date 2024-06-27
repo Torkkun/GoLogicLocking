@@ -17,6 +17,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
+// とりあえず使い捨て
 func TestNewParseDB(t *testing.T) {
 	parseresult := parser.NewParse("../testtxt/test.txt")
 	// Connectionの設定は後で考える
@@ -27,48 +28,133 @@ func TestNewParseDB(t *testing.T) {
 	ctx := context.Background()
 
 	defer driver.Driver.Close(ctx)
-	var err error
+	// key declname, value element ID
+	// nodemap ロジックゲートはGateTypeのノードを紐づけたらmapから消去していく
+	iomap := make(map[string]string)
+	netmap := make(map[string]string)
+	gatemap := make(map[utils.GateType][]string)
+
+	// IO Port定義からIOノードを作成
 	for _, io := range parseresult.Declarations.IOPorts {
 		neoio := verpyverilog.IONode{
 			Type: string(io.Type),
 			Name: io.Name,
 		}
-		if err = neoio.CreateInOutNode(ctx, driver.Driver, dbname); err != nil {
+		elementId, err := neoio.CreateInOutNode(ctx, driver.Driver, dbname)
+		if err != nil {
 			log.Fatalln(err)
 		}
+		iomap[io.Name] = elementId
 	}
+	// Net Wire定義からWireノードを作成
 	for _, wire := range parseresult.Declarations.Wires {
 		neowire := verpyverilog.WireNode{
 			Name: wire.Name,
 		}
-		if err = neowire.CreateWireNode(ctx, driver.Driver, dbname); err != nil {
+		elementId, err := neowire.CreateWireNode(ctx, driver.Driver, dbname)
+		if err != nil {
 			log.Fatalln(err)
 		}
+		netmap[wire.Name] = elementId
 	}
+	// LogicGate定義からLogicノードを作成
 	for _, logicgate := range parseresult.LogicGates {
 		gate := verpyverilog.LogicGateNode{
 			GateType: string(logicgate.GateType),
-			At:       logicgate.At,
 		}
-		if err = gate.CreateLogicGateNode(ctx, driver.Driver, dbname); err != nil {
+		elementId, err := gate.CreateLogicGateNode(ctx, driver.Driver, dbname)
+		if err != nil {
 			log.Fatalln(err)
 		}
+		gatemap[logicgate.GateType] = append(gatemap[logicgate.GateType], elementId)
 	}
-	for at, relation := range parseresult.Nodes {
+	for _, relation := range parseresult.Nodes {
 		// i1 <- lg, i2 <- lg, lg <- out
+
+		gelementId := gatemap[relation.Gate][0]
+		gatemap[relation.Gate] = gatemap[relation.Gate][1:]
+
 		// i1 <- lg
-		if err := verpyverilog.LGtoIN(ctx, driver.Driver, dbname, relation.In1, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
+		/* if err := verpyverilog.LGtoIN(ctx, driver.Driver, dbname, relation.In1, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
 			log.Fatalln(err)
+		} */
+		_, ok := verpyverilog.IsIO(parseresult.Declarations.IOPorts, relation.In1)
+		if ok {
+			inelementId := iomap[relation.In1]
+			gio := verpyverilog.GateIO{
+				GateElementId: gelementId,
+				IoElementId:   inelementId,
+			}
+			if err := gio.GatetoIOByElementId(ctx, driver.Driver, dbname); err != nil {
+				log.Fatalln(err)
+			}
+		}
+		_, ok = verpyverilog.IsWire(parseresult.Declarations.Wires, relation.In1)
+		if ok {
+			welementId := netmap[relation.In1]
+			gio := verpyverilog.GateWire{
+				GateElementId: gelementId,
+				WireElementId: welementId,
+			}
+			if err := gio.GatetoWireByElementId(ctx, driver.Driver, dbname); err != nil {
+				log.Fatalln(err)
+			}
 		}
 
 		// i2 <- lg
-		if err := verpyverilog.LGtoIN(ctx, driver.Driver, dbname, relation.In2, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
+
+		/* if err := verpyverilog.LGtoIN(ctx, driver.Driver, dbname, relation.In2, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
 			log.Fatalln(err)
+		} */
+		_, ok = verpyverilog.IsIO(parseresult.Declarations.IOPorts, relation.In2)
+		if ok {
+			inelementId := iomap[relation.In2]
+			gio := verpyverilog.GateIO{
+				GateElementId: gelementId,
+				IoElementId:   inelementId,
+			}
+			if err := gio.GatetoIOByElementId(ctx, driver.Driver, dbname); err != nil {
+				log.Fatalln(err)
+			}
+		}
+		_, ok = verpyverilog.IsWire(parseresult.Declarations.Wires, relation.In2)
+		if ok {
+			welementId := netmap[relation.In2]
+			gio := verpyverilog.GateWire{
+				GateElementId: gelementId,
+				WireElementId: welementId,
+			}
+			if err := gio.GatetoWireByElementId(ctx, driver.Driver, dbname); err != nil {
+				log.Fatalln(err)
+			}
 		}
 
 		// lg <- out
-		if err := verpyverilog.OUTtoLG(ctx, driver.Driver, dbname, relation.Out, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
+		/* if err := verpyverilog.OUTtoLG(ctx, driver.Driver, dbname, relation.Out, at, *parseresult.Declarations, parseresult.LogicGates); err != nil {
 			log.Fatalln(err)
+		} */
+		_, ok = verpyverilog.IsIO(parseresult.Declarations.IOPorts, relation.Out)
+		if ok {
+			outelementId := iomap[relation.Out]
+			gio := verpyverilog.GateIO{
+				GateElementId: gelementId,
+				IoElementId:   outelementId,
+			}
+			if err := gio.IOtoGateByElementId(ctx, driver.Driver, dbname); err != nil {
+				log.Fatalln(err)
+			}
+		}
+
+		_, ok = verpyverilog.IsWire(parseresult.Declarations.Wires, relation.Out)
+		if ok {
+			outelementId := netmap[relation.Out]
+			gwire := verpyverilog.GateWire{
+				GateElementId: gelementId,
+				WireElementId: outelementId,
+			}
+			if err := gwire.WiretoGateByElementId(ctx, driver.Driver, dbname); err != nil {
+				log.Fatalln(err)
+			}
 		}
 	}
 }
@@ -106,12 +192,11 @@ func TestGrphToVerilog(t *testing.T) {
 	defer driver.Close(ctx)
 	modulename := "test"
 	data := ConvertToVGeneratorData(ctx, driver, "neo4j")
-	fmt.Println(data)
 	data.ModuleName = modulename
 
-	//if err := vgenerator.NewGenerator(*data, false); err != nil {
-	//	log.Fatalln(err)
-	//}
+	if err := vgenerator.NewGenerator(*data, false); err != nil {
+		log.Fatalln(err)
+	}
 }
 
 // 1bittest ver verilog
@@ -151,10 +236,18 @@ func ConvertToVGeneratorData(ctx context.Context, driver neo4j.DriverWithContext
 		if err != nil {
 			log.Fatalln(err)
 		}
+		if pre == nil {
+			log.Fatalln("predecessors nil")
+		}
 		suc, err := verpyverilog.GetAllSuccessorNodes(ctx, driver, dbname, gate.ElementId)
 		if err != nil {
 			log.Fatalln(err)
 		}
+		if suc == nil {
+			log.Fatalln("successors nil")
+		}
+
+		// 一次的にyosysのGateTypeに合わせるため
 		yosystype := Selector(gate.LGN.GateType)
 		var connection interface{}
 		if yosystype == yosysjson.NOT || yosystype == yosysjson.BUF {
@@ -167,7 +260,7 @@ func ConvertToVGeneratorData(ctx context.Context, driver neo4j.DriverWithContext
 			connection = funcmap.Logic{
 				Y: pre[0].NodeName,
 				A: suc[0].NodeName,
-				B: suc[0].NodeName,
+				B: suc[1].NodeName,
 			}
 		}
 		gateDecls = append(gateDecls, &funcmap.AssignDecl{
@@ -179,12 +272,12 @@ func ConvertToVGeneratorData(ctx context.Context, driver neo4j.DriverWithContext
 	if err != nil {
 		log.Fatalln(err)
 	}
-	for _, lg := range lockg {
-		pre, err := verpyverilog.GetAllPredecessors(ctx, driver, dbname, lg.LockGateNode.ElementId)
+	for elementId, lg := range lockg {
+		pre, err := verpyverilog.GetAllPredecessors(ctx, driver, dbname, elementId)
 		if err != nil {
 			log.Fatalln(err)
 		}
-		suc, err := verpyverilog.GetAllSuccessorNodes(ctx, driver, dbname, lg.LockGateNode.ElementId)
+		suc, err := verpyverilog.GetAllSuccessorNodes(ctx, driver, dbname, elementId)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -192,7 +285,7 @@ func ConvertToVGeneratorData(ctx context.Context, driver neo4j.DriverWithContext
 		connection := funcmap.Logic{
 			Y: pre[0].NodeName,
 			A: suc[0].NodeName,
-			B: suc[0].NodeName,
+			B: suc[1].NodeName,
 		}
 		gateDecls = append(gateDecls, &funcmap.AssignDecl{
 			ExpressionType: yosystype,
@@ -204,6 +297,7 @@ func ConvertToVGeneratorData(ctx context.Context, driver neo4j.DriverWithContext
 	newData.PortList = portlist
 	newData.PortDecl = portDecls
 	newData.NetDecl = netDecls
+	newData.AssignDecl = gateDecls
 
 	return newData
 }
