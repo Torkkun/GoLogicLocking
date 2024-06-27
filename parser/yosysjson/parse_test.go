@@ -9,10 +9,10 @@ import (
 )
 
 func TestParseandConvertToDB(t *testing.T) {
-	//var path = "C:\\Users\\onigi\\projects\\GoLogicLocking\\testverilog\\workspace\\fulladd\\testfulladd.json"
-	//var topmodule = "fulladd"
-	var path = "C:\\Users\\onigi\\projects\\GoLogicLocking\\testverilog\\workspace\\ltika2\\ltika2.json"
-	var topmodule = "blink"
+	var path = "C:\\Users\\onigi\\projects\\GoLogicLocking\\testverilog\\workspace\\fulladd\\testfulladd.json"
+	var topmodule = "fulladd"
+	//var path = "C:\\Users\\onigi\\projects\\GoLogicLocking\\testverilog\\workspace\\ltika2\\ltika2.json"
+	//var topmodule = "blink"
 	file, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalln(err)

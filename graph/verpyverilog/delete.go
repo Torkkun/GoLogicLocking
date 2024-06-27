@@ -8,7 +8,7 @@ import (
 )
 
 // Delete Relationship
-func (gi *GateIO) DeleteRelationGatetoIO(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+/* func (gi *GateIO) DeleteRelationGatetoIO(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
 		`MATCH (io:IO {type: $io_type, name: $io_name})<-[r:LGtoIO]-(g:Gate {type: $g_type, at: $g_at})
 		DELETE r`,
@@ -25,9 +25,9 @@ func (gi *GateIO) DeleteRelationGatetoIO(ctx context.Context, driver neo4j.Drive
 		return err
 	}
 	return nil
-}
+} */
 
-func (gi *GateIO) DeleteRelationIOtoGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+/* func (gi *GateIO) DeleteRelationIOtoGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
 		`MATCH (g:Gate {type: $g_type, at: $g_at})<-[r:IOtoLG]-(io:IO {type: $io_type, name: $io_name})
 		DELETE r`,
@@ -44,7 +44,7 @@ func (gi *GateIO) DeleteRelationIOtoGate(ctx context.Context, driver neo4j.Drive
 		return err
 	}
 	return nil
-}
+} */
 
 func DeleteRelationIOtoGateByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname, elementId string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
@@ -63,7 +63,7 @@ func DeleteRelationIOtoGateByElementId(ctx context.Context, driver neo4j.DriverW
 	return nil
 }
 
-func (gw *GateWire) DeleteRelationWiretoGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+/* func (gw *GateWire) DeleteRelationWiretoGate(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
 		`MATCH (g:Gate {type: $g_type, at: $g_at})<-[r:WiretoLG]-(w:Wire {name: $w_name})
 		DELETE r`,
@@ -79,7 +79,7 @@ func (gw *GateWire) DeleteRelationWiretoGate(ctx context.Context, driver neo4j.D
 		return err
 	}
 	return nil
-}
+} */
 
 func DeleteRelationWiretoGateByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname, elementId string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
@@ -98,7 +98,7 @@ func DeleteRelationWiretoGateByElementId(ctx context.Context, driver neo4j.Drive
 	return nil
 }
 
-func (gw *GateWire) DeleteRelationGatetoWire(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+/* func (gw *GateWire) DeleteRelationGatetoWire(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
 		`MATCH (w:Wire {name: $w_name})<-[r:LGtoWire]-(g:Gate {type: $g_type, at: $g_at})
 		DELETE r `,
@@ -114,4 +114,4 @@ func (gw *GateWire) DeleteRelationGatetoWire(ctx context.Context, driver neo4j.D
 		return err
 	}
 	return nil
-}
+} */

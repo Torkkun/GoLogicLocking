@@ -3,6 +3,7 @@ package vgenerator
 import (
 	"goll/vgenerator/funcmap"
 	"os"
+	"path/filepath"
 	"text/template"
 )
 
@@ -19,7 +20,12 @@ type GenerateData struct {
 
 func NewGenerator(val GenerateData, dryrun bool) error {
 	tplmap := funcmap.NewFuncMap()
-	tpl, err := template.New("module.tmpl").Funcs(tplmap).ParseFiles("template/module.tmpl")
+	tmplpath, err := filepath.Abs("../template/module.tmpl")
+	if err != nil {
+		return err
+	}
+
+	tpl, err := template.New("module.tmpl").Funcs(tplmap).ParseFiles(tmplpath)
 	if err != nil {
 		return err
 	}

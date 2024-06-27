@@ -67,18 +67,17 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 		newL := new(verpyverilog.LockGateNode)
 		newL.GateType = string(gateType)
 		newL.LockType = "randomll"
-		newL.Name = fmt.Sprintf("key_gate_%v", i)
 		newLGEid, err := newL.CreateLockingGateNode(ctx, driver, dbname)
 		if err != nil {
 			return nil, err
 		}
-		// ノード作成後ElementId取得して設定
-		newL.ElementId = newLGEid
 
+		// ロックしたキーを設定
 		newio := new(verpyverilog.IONode)
 		newio.Name = fmt.Sprintf("key_%v", i)
 		newio.Type = "IN"
-		if err = newio.CreateInOutNode(ctx, driver, dbname); err != nil {
+		newinkeyid, err := newio.CreateInOutNode(ctx, driver, dbname)
+		if err != nil {
 			return nil, err
 		}
 		// もともとのロジックゲートのOUTを外して、付け替える
@@ -90,8 +89,8 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 			// xorとio(out)を接続
 			funout := ioar.Neo4JIO
 			newIOtoLG := new(verpyverilog.LockGateIO)
-			newIOtoLG.Gate = newL
-			newIOtoLG.Io = funout.ION
+			newIOtoLG.GateElementId = newLGEid
+			newIOtoLG.IoElementId = funout.ElementId
 			if err = newIOtoLG.IOtoLLGateByElementId(ctx, driver, dbname); err != nil {
 				return nil, err
 			}
@@ -104,29 +103,42 @@ func XorLock(ctx context.Context, driver neo4j.DriverWithContext, dbname string,
 			// xorとwireを接続
 			funout := war.Neo4JWire
 			newWtoLG := new(verpyverilog.LockGateWire)
-			newWtoLG.Gate = newL
-			newWtoLG.Wire = funout.WN
+			newWtoLG.GateElementId = newLGEid
+			newWtoLG.WireElementId = funout.ElementId
 			if err = newWtoLG.WiretoLLGateByElementId(ctx, driver, dbname); err != nil {
 				return nil, err
 			}
-
 		} else {
 			err = fmt.Errorf("GateRelation is missing")
 			return nil, err
 		}
 		// key追加とxorゲートと接続
 		newLGtoIO := new(verpyverilog.LockGateIO)
-		newLGtoIO.Gate = newL
-		newLGtoIO.Io = newio
+		newLGtoIO.GateElementId = newLGEid
+		newLGtoIO.IoElementId = newinkeyid
 		if err = newLGtoIO.LLGatetoIOByElementId(ctx, driver, dbname); err != nil {
 			return nil, err
 		}
 		// xorゲートと元のゲートと接続
-		funin := all.Lgs[gate.ElementId].LGN
-		newLgtoG := new(verpyverilog.LLGateGate)
-		newLgtoG.LGN = funin
-		newLgtoG.LLGN = newL
-		if err = newLgtoG.LLGatetoGateElementId(ctx, driver, dbname); err != nil {
+		// その際に間にwireを介する
+		newconnwire := new(verpyverilog.WireNode)
+		newconnwire.Name = fmt.Sprintf("key_gate_%d", i)
+		newwireid, err := newconnwire.CreateWireNode(ctx, driver, dbname)
+		if err != nil {
+			return nil, err
+		}
+		// 元のLogicGate <- 新しく作成したwire
+		gw := new(verpyverilog.GateWire)
+		gw.GateElementId = gate.ElementId
+		gw.WireElementId = newwireid
+		if err = gw.WiretoGateByElementId(ctx, driver, dbname); err != nil {
+			return nil, err
+		}
+		// 新しく作成したwire <- LockLogicGate
+		llgw := new(verpyverilog.LockGateWire)
+		llgw.GateElementId = newLGEid
+		llgw.WireElementId = newwireid
+		if err = llgw.LLGatetoWireByElementId(ctx, driver, dbname); err != nil {
 			return nil, err
 		}
 	}

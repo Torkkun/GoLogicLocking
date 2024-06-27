@@ -36,7 +36,6 @@ func GetAllLogicNodes(ctx context.Context, driver neo4j.DriverWithContext, dbnam
 		lgnodes[elementId] = &GetNeo4JLogicNode{
 			LGN: &LogicGateNode{
 				GateType: tmp.Props["type"].(string),
-				At:       int(tmp.Props["at"].(int64)),
 			},
 			ElementId: elementId,
 			Id:        id,
@@ -145,10 +144,8 @@ func GetAllLockGateNodes(ctx context.Context, driver neo4j.DriverWithContext, db
 		elementId := tmp.GetElementId()
 		lgnodes[elementId] = &GetNeo4JLockGateNode{
 			LockGateNode: &LockGateNode{
-				Name:      tmp.Props["name"].(string),
-				LockType:  tmp.Props["ll"].(string),
-				GateType:  tmp.Props["type"].(string),
-				ElementId: elementId,
+				LockType: tmp.Props["ll"].(string),
+				GateType: tmp.Props["type"].(string),
 			},
 		}
 	}
@@ -161,12 +158,12 @@ type GetNeo4JWireAndRelation struct {
 }
 
 // Gate <- Wireのリレーションを取得
-func (g *LogicGateNode) GetWiretoGateRelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (map[string]*GetNeo4JWireAndRelation, error) {
+/* func (g *LogicGateNode) GetWiretoGateRelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (map[string]*GetNeo4JWireAndRelation, error) {
 	result, err := neo4j.ExecuteQuery(ctx, driver,
-		`MATCH (:Gate {type: $g_type, at: $g_at})<-[r:WiretoLG]-(w:Wire) RETURN r,w`,
+		`MATCH (:Gate {type: $g_type, at: $g_at})<-[r:WiretoLG]-(w:Wire)
+		RETURN r,w`,
 		map[string]any{
 			"g_type": g.GateType,
-			"g_at":   g.At,
 		},
 		neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase(dbname))
@@ -206,7 +203,7 @@ func (g *LogicGateNode) GetWiretoGateRelation(ctx context.Context, driver neo4j.
 		}
 	}
 	return wireandrelation, nil
-}
+} */
 
 func GetWiretoGateRelationByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname, elementId string) ([]*GetNeo4JWireAndRelation, error) {
 	result, err := neo4j.ExecuteQuery(ctx, driver,
@@ -256,6 +253,11 @@ func GetWiretoGateRelationByElementId(ctx context.Context, driver neo4j.DriverWi
 
 	}
 	return wireandrelation, nil
+}
+
+type GetNeo4JIoAndRelation struct {
+	Neo4JIO  *GetNeo4JIONode
+	Relation *Relation
 }
 
 func GetIOtoGateRelationByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname, elementId string) ([]*GetNeo4JIoAndRelation, error) {
@@ -309,13 +311,8 @@ func GetIOtoGateRelationByElementId(ctx context.Context, driver neo4j.DriverWith
 	return ioandrelation, nil
 }
 
-type GetNeo4JIoAndRelation struct {
-	Neo4JIO  *GetNeo4JIONode
-	Relation *Relation
-}
-
 // Gate <- IO(OUT)のリレーション
-func (lg *LogicGateNode) GetIOtoGateRelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (map[string]*GetNeo4JIoAndRelation, error) {
+/* func (lg *LogicGateNode) GetIOtoGateRelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (map[string]*GetNeo4JIoAndRelation, error) {
 	result, err := neo4j.ExecuteQuery(ctx, driver,
 		`
 		MATCH (:Gate {type: $g_type, at: $g_at})<-[r:IOtoLG]-(io:IO)
@@ -364,11 +361,29 @@ func (lg *LogicGateNode) GetIOtoGateRelation(ctx context.Context, driver neo4j.D
 		}
 	}
 	return ioandrelation, nil
+} */
+
+// IO(IN) <- Gateのリレーションを取得
+func (io *IONode) GetLGtoIORelation(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
+	_, err := neo4j.ExecuteQuery(ctx, driver,
+		`MATCH (:IO {name: $io_name, type: $io_type})<-[r:LGtoIO]-(:Gate) RETURN r`,
+		map[string]any{
+			"io_name": io.Name,
+			"io_type": io.Type,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("MATCH LGtoIO Relation Error:%v", err)
+		return err
+	}
+	return nil
 }
 
 type PredecessorNode struct {
 	RelationElementID string
 	NodeElementID     string
+	NodeName          string
 }
 
 // A <- (B) ,Get "B" Node
@@ -403,6 +418,7 @@ func GetAllPredecessors(ctx context.Context, driver neo4j.DriverWithContext, dbn
 		predecessors = append(predecessors, &PredecessorNode{
 			RelationElementID: tmpr.GetElementId(),
 			NodeElementID:     tmpn.GetElementId(),
+			NodeName:          tmpn.Props["name"].(string),
 		})
 	}
 	return predecessors, nil

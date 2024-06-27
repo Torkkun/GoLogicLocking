@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"goll/parser/yosysjson"
 	"goll/utils"
+	"path/filepath"
 	"text/template"
 )
 
 func assignDeclElement(assigndecls []*AssignDecl) (string, error) {
 	var returnstr string
-	var err error
 	var data interface{}
 	for _, assigndecl := range assigndecls {
 		var templatename string
@@ -57,7 +57,11 @@ func assignDeclElement(assigndecls []*AssignDecl) (string, error) {
 			return "", fmt.Errorf("not implement this type %s", assigndecl.ExpressionType)
 		}
 		t := template.New(templatename)
-		t, err = t.ParseGlob(fmt.Sprintf("template/cells/%s/*.tmpl", globpath))
+		tmplcellpath, err := filepath.Abs("../template/cells")
+		if err != nil {
+			return "", err
+		}
+		t, err = t.ParseGlob(fmt.Sprintf("%s/%s/*.tmpl", tmplcellpath, globpath))
 		if err != nil {
 			return "", err
 		}

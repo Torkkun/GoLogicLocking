@@ -12,9 +12,10 @@ type IONode struct {
 	Name string
 }
 
-func (io *IONode) CreateInOutNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
-	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`CREATE (:IO {type: $type, name:$name})`,
+func (io *IONode) CreateInOutNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (string, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`CREATE (io:IO {type: $type, name:$name})
+		RETURN io`,
 		map[string]any{
 			"type": io.Type,
 			"name": io.Name,
@@ -23,37 +24,56 @@ func (io *IONode) CreateInOutNode(ctx context.Context, driver neo4j.DriverWithCo
 		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択 後で
 	if err != nil {
 		err = fmt.Errorf("CreateInOutNode Error:%v", err)
-		return err
+		return "", err
 	}
-	return nil
+	if len(result.Records) != 1 {
+		err = fmt.Errorf("to match node:%v", result.Records)
+		return "", err
+	}
+	record := result.Records[0]
+	resio, ok := record.Get("io")
+	if !ok {
+		err = fmt.Errorf("NotfoundCreated IO Node")
+		return "", err
+	}
+	n := resio.(neo4j.Node)
+	return n.GetElementId(), nil
 }
 
 type LogicGateNode struct {
 	GateType string
-	At       int
 }
 
-func (gate *LogicGateNode) CreateLogicGateNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
-	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`CREATE (:Gate {type: $type, at: $at})`,
+func (gate *LogicGateNode) CreateLogicGateNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (string, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`CREATE (g:Gate {type: $type})
+		RETURN g`,
 		map[string]any{
 			"type": gate.GateType,
-			"at":   gate.At,
 		},
 		neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
 	if err != nil {
 		err = fmt.Errorf("CreateLogicGateNode Error:%v", err)
-		return err
+		return "", err
 	}
-	return nil
+	if len(result.Records) != 1 {
+		err = fmt.Errorf("to match node:%v", result.Records)
+		return "", err
+	}
+	record := result.Records[0]
+	resg, ok := record.Get("g")
+	if !ok {
+		err = fmt.Errorf("NotfoundCreated Logic Node")
+		return "", err
+	}
+	n := resg.(neo4j.Node)
+	return n.GetElementId(), nil
 }
 
 type LockGateNode struct {
-	GateType  string
-	LockType  string
-	Name      string
-	ElementId string
+	GateType string
+	LockType string
 }
 
 func (lg *LockGateNode) CreateLockingGateNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (string, error) {
@@ -63,7 +83,6 @@ func (lg *LockGateNode) CreateLockingGateNode(ctx context.Context, driver neo4j.
 		map[string]any{
 			"type": lg.GateType,
 			"ll":   lg.LockType,
-			"name": lg.Name,
 		},
 		neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
@@ -71,27 +90,28 @@ func (lg *LockGateNode) CreateLockingGateNode(ctx context.Context, driver neo4j.
 		err = fmt.Errorf("CreateLockingGateNode Error:%v", err)
 		return "", err
 	}
-	if len(result.Records) > 1 {
-		err = fmt.Errorf("CreateLockingGateNode is to match:%v", len(result.Records))
+	if len(result.Records) != 1 {
+		err = fmt.Errorf("to match node:%v", result.Records)
 		return "", err
 	}
 	record := result.Records[0]
-	g, ok := record.Get("g")
+	reslg, ok := record.Get("g")
 	if !ok {
 		err = fmt.Errorf("NotfoundCreated Locking Node")
 		return "", err
 	}
-	tmpg := g.(neo4j.Node)
-	return tmpg.GetElementId(), nil
+	n := reslg.(neo4j.Node)
+	return n.GetElementId(), nil
 }
 
 type WireNode struct {
 	Name string
 }
 
-func (wire *WireNode) CreateWireNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
-	_, err := neo4j.ExecuteQuery(ctx, driver,
-		`CREATE (:Wire {name: $name})`,
+func (wire *WireNode) CreateWireNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (string, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver,
+		`CREATE (w:Wire {name: $name})
+		RETURN w`,
 		map[string]any{
 			"name": wire.Name,
 		},
@@ -99,7 +119,16 @@ func (wire *WireNode) CreateWireNode(ctx context.Context, driver neo4j.DriverWit
 		neo4j.ExecuteQueryWithDatabase(dbname)) //DBの選択
 	if err != nil {
 		err = fmt.Errorf("CreateWireNode Error:%v", err)
-		return err
+		return "", err
 	}
-	return nil
+	if len(result.Records) != 1 {
+		return "", fmt.Errorf("too much node: %v", result.Records)
+	}
+	resw, ok := result.Records[0].Get("w")
+	if !ok {
+		err = fmt.Errorf("NotfoundCreated Wire Node")
+		return "", err
+	}
+	n := resw.(neo4j.Node)
+	return n.GetElementId(), nil
 }

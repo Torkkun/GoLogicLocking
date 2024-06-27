@@ -3,13 +3,12 @@ package verpyverilog
 import (
 	"context"
 	"fmt"
-	"goll/utils"
 	"testing"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-func TestRelationIOtoLG(t *testing.T) {
+/* func TestRelationIOtoLG(t *testing.T) {
 	ctx := context.Background()
 	dbUri := "neo4j://localhost"
 	dbUser := "neo4j"
@@ -23,7 +22,7 @@ func TestRelationIOtoLG(t *testing.T) {
 	defer driver.Close(ctx)
 	lg := LogicGateNode{GateType: "OR", At: 23}
 	lg.GetIOtoGateRelation(ctx, driver, "neo4j")
-}
+} */
 
 func TestRelationLGtoW(t *testing.T) {
 	ctx := context.Background()
@@ -39,7 +38,7 @@ func TestRelationLGtoW(t *testing.T) {
 	defer driver.Close(ctx)
 }
 
-func TestGetIOtoGateRelation(t *testing.T) {
+/* func TestGetIOtoGateRelation(t *testing.T) {
 	ctx := context.Background()
 	dbUri := "neo4j://localhost"
 	dbUser := "neo4j"
@@ -61,9 +60,9 @@ func TestGetIOtoGateRelation(t *testing.T) {
 		fmt.Println(r.Neo4JIO)
 		fmt.Println(r.Relation)
 	}
-}
+} */
 
-func TestGetWiretoGateRelation(t *testing.T) {
+/* func TestGetWiretoGateRelation(t *testing.T) {
 	ctx := context.Background()
 	dbUri := "neo4j://localhost"
 	dbUser := "neo4j"
@@ -85,7 +84,7 @@ func TestGetWiretoGateRelation(t *testing.T) {
 		fmt.Println(r.Neo4JWire)
 		fmt.Println(r.Relation)
 	}
-}
+} */
 
 func TestGetWtoGRelationByElementId(t *testing.T) {
 	ctx := context.Background()
