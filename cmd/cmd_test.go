@@ -12,6 +12,7 @@ import (
 	"goll/vgenerator"
 	"goll/vgenerator/funcmap"
 	"log"
+	"os"
 	"testing"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
@@ -175,7 +176,12 @@ func TestXorLock(t *testing.T) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(key)
+	file, err := os.Create("lockinkey.txt")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	file.WriteString(fmt.Sprintf("%v", key))
 }
 
 func TestGrphToVerilog(t *testing.T) {

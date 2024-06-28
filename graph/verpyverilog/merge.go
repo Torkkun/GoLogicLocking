@@ -219,7 +219,7 @@ func (gi *GateIO) IOtoGateByElementId(ctx context.Context, driver neo4j.DriverWi
 func (lgi *LockGateIO) IOtoLLGateByElementId(ctx context.Context, driver neo4j.DriverWithContext, dbname string) error {
 	_, err := neo4j.ExecuteQuery(ctx, driver,
 		`MATCH (lg:LLGate), (io:IO)
-		WHERE elementId(lg)=$lg_element_id AND elementId(io)=$io_elementID(io)
+		WHERE elementId(lg)=$lg_element_id AND elementId(io)=$io_element_id
 		MERGE (lg)<-[:IOtoLLG]-(io)`,
 		map[string]any{
 			"lg_element_id": lgi.GateElementId,
