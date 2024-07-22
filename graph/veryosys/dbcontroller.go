@@ -1,17 +1,13 @@
 package veryosys
 
-// Cells
+// Cells (Connection)
 type Cell struct {
-	Type        string
-	Connections map[int]struct {
-		Type string
+	Type        string           // gate or ff type
+	Connections map[int]struct { // key is BitNum
+		Type string // input or output
 	}
 }
 
-// return map[string]NetName
-//
-//	Key: ElementID, Value: NetName
-//
 // Wire
 type NetName struct {
 	BitNum    int
@@ -22,7 +18,7 @@ type NetName struct {
 // Input Output InOut
 type Port struct {
 	Direction string
-	BitNum    int
+	BitNum    []int
 	BitWidth  int
 	Name      string
 }

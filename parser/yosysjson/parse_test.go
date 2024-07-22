@@ -24,10 +24,18 @@ func TestParseandConvertToDB(t *testing.T) {
 	fulladdmod := yosysjson.Modules[topmodule]
 	gport := PortsConvertToStoreGraph(fulladdmod.Ports)
 	gname := NetsConvertToStoreGraph(fulladdmod.NetName)
+	gcell := CellsConvertToStoreGraph(fulladdmod.Cells)
+
+	fmt.Println("## Ports ##")
 	for _, v := range gport {
 		fmt.Println(v)
 	}
+	fmt.Println("## Nets ##")
 	for _, v := range gname {
+		fmt.Println(v)
+	}
+	fmt.Println("## Cells ##")
+	for _, v := range gcell {
 		fmt.Println(v)
 	}
 }

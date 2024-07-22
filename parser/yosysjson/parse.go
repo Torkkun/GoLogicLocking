@@ -10,7 +10,7 @@ func PortsConvertToStoreGraph(ports map[string]Port) []*veryosys.Port {
 	for name, port := range ports {
 		graphPorts = append(graphPorts, &veryosys.Port{
 			Direction: port.Direction,
-			BitNum:    port.Bits[0], //PortsのBitはすべて同じと今は仮定する
+			BitNum:    port.Bits,
 			BitWidth:  len(port.Bits),
 			Name:      name,
 		})
@@ -19,6 +19,8 @@ func PortsConvertToStoreGraph(ports map[string]Port) []*veryosys.Port {
 }
 
 func NetsConvertToStoreGraph(nets map[string]NetName) []*veryosys.NetName {
+	netmaps := make(map[int]NetName)
+
 	var graphNets []*veryosys.NetName
 	var count int
 	for _, net := range nets {
@@ -45,6 +47,27 @@ func NetsConvertToStoreGraph(nets map[string]NetName) []*veryosys.NetName {
 	return graphNets
 }
 
-func CellsConvertToStoreGraph(cells map[string]Cell) {
-
+func CellsConvertToStoreGraph(cells map[string]Cell) []*veryosys.Cell {
+	var graphCells []*veryosys.Cell
+	for _, cell := range cells {
+		if cell.HideName == 0 {
+			continue
+		}
+		conns := make(map[int]struct{ Type string })
+		for k, v := range cell.PortDirections {
+			bitnum := cell.Connections[k]
+			if len(bitnum) > 1 {
+				err := fmt.Errorf("multibit not implement: %v", bitnum)
+				panic(err.Error())
+			}
+			conns[bitnum[0]] = struct{ Type string }{
+				Type: v,
+			}
+		}
+		graphCells = append(graphCells, &veryosys.Cell{
+			Type:        cell.Type,
+			Connections: conns,
+		})
+	}
+	return graphCells
 }
