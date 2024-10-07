@@ -1,0 +1,4 @@
+package veryosys
+
+// Inout ノードをグラフDBで作成してBitNumとElementIdのペアを取得
+// 同様にBitNumとElementIDのペアを取得し、DBのNodeがIOやWireなどの情報もまとめてコネクションをまとめる

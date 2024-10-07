@@ -3,14 +3,22 @@ package yosysjson
 import (
 	"fmt"
 	"goll/graph/veryosys"
+
+	mapset "github.com/deckarep/golang-set/v2"
 )
 
 func PortsConvertToStoreGraph(ports map[string]Port) []*veryosys.Port {
 	var graphPorts []*veryosys.Port
 	for name, port := range ports {
+
+		portnumSet := mapset.NewSet[int](port.Bits...)
+		if portnumSet.Cardinality() > 1 {
+			panic(fmt.Errorf("現在対応しているのはBitNumが一種類のみ: %v", portnumSet.Cardinality()).Error())
+		}
+
 		graphPorts = append(graphPorts, &veryosys.Port{
 			Direction: port.Direction,
-			BitNum:    port.Bits,
+			BitNum:    port.Bits[0],
 			BitWidth:  len(port.Bits),
 			Name:      name,
 		})
@@ -19,55 +27,55 @@ func PortsConvertToStoreGraph(ports map[string]Port) []*veryosys.Port {
 }
 
 func NetsConvertToStoreGraph(nets map[string]NetName) []*veryosys.NetName {
-	netmaps := make(map[int]NetName)
-
 	var graphNets []*veryosys.NetName
-	var count int
-	for _, net := range nets {
+
+	for netname, net := range nets {
 		if net.HideName == 0 {
 			continue
 		}
-		if len(net.Bits) > 1 {
-			for numindex, num := range net.Bits {
-				graphNets = append(graphNets, &veryosys.NetName{
-					BitNum:    num,
-					Name:      fmt.Sprintf("_%d_[%d]", count, numindex),
-					WireGroup: fmt.Sprintf("_%d_", count),
-				})
-			}
-		} else {
-			graphNets = append(graphNets, &veryosys.NetName{
-				BitNum:    net.Bits[0],
-				Name:      fmt.Sprintf("_%d_", count),
-				WireGroup: fmt.Sprintf("_%d_", count),
-			})
-		}
-		count += 1
+		graphNets = append(graphNets, &veryosys.NetName{
+			Bits:    net.Bits,
+			Netname: netname,
+			Attributes: struct{ Src string }{
+				net.Attributes.Src,
+			},
+		})
 	}
 	return graphNets
 }
 
-func CellsConvertToStoreGraph(cells map[string]Cell) []*veryosys.Cell {
+func CellsConvertToStoreGraph(cells map[string]Cell) ([]*veryosys.Cell, veryosys.Connections) {
 	var graphCells []*veryosys.Cell
+	graphConns := make(map[string][]*veryosys.Connection)
 	for _, cell := range cells {
 		if cell.HideName == 0 {
 			continue
 		}
-		conns := make(map[int]struct{ Type string })
-		for k, v := range cell.PortDirections {
-			bitnum := cell.Connections[k]
+		var conns []*veryosys.Connection
+		for portName, portType := range cell.PortDirections {
+			conn := new(veryosys.Connection)
+			bitnum := cell.Connections[portName]
+
+			// 接続Bitが1Bitではないときエラー
 			if len(bitnum) > 1 {
-				err := fmt.Errorf("multibit not implement: %v", bitnum)
+				err := fmt.Errorf("接続Bitが1Bitではないときエラー:multibit not implement: %v", bitnum)
 				panic(err.Error())
 			}
-			conns[bitnum[0]] = struct{ Type string }{
-				Type: v,
-			}
+			conn.Type = portType
+			conn.BitNum = bitnum[0]
+			conn.PortName = portName
+
+			conns = append(conns, conn)
 		}
 		graphCells = append(graphCells, &veryosys.Cell{
-			Type:        cell.Type,
-			Connections: conns,
+			Type: cell.Type,
+			Attributes: struct {
+				Src string
+			}{
+				cell.Attributes.Src,
+			},
 		})
+		graphConns[cell.Attributes.Src] = conns
 	}
-	return graphCells
+	return graphCells, graphConns
 }

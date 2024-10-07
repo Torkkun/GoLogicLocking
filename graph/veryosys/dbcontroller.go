@@ -1,24 +1,35 @@
 package veryosys
 
-// Cells (Connection)
+// グラフとして表現するための部分
+
+// Cells
 type Cell struct {
-	Type        string           // gate or ff type
-	Connections map[int]struct { // key is BitNum
-		Type string // input or output
+	Type       string // gate or ff type
+	Attributes struct {
+		Src string
 	}
 }
 
-// Wire
+// Connections
+type Connections map[string][]*Connection // AttrSrc is Key
+type Connection struct {
+	Type     string // input or output
+	BitNum   int
+	PortName string
+}
+
 type NetName struct {
-	BitNum    int
-	Name      string
-	WireGroup string
+	Bits       []int
+	Netname    string
+	Attributes struct {
+		Src string
+	}
 }
 
 // Input Output InOut
 type Port struct {
 	Direction string
-	BitNum    []int
-	BitWidth  int
+	BitNum    int //ポートの接続Bit
+	BitWidth  int //ビット幅（すべてのBitが同じ場所に繋がっているわけではない）
 	Name      string
 }

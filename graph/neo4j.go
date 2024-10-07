@@ -7,13 +7,13 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-type graphDB struct {
+type GraphDB struct {
 	Driver neo4j.DriverWithContext
 	DBname string
 }
 
 // test
-func NewDriver() *graphDB {
+func NewDriver() *GraphDB {
 	dbUri := "neo4j://localhost"
 	dbUser := "neo4j"
 	dbPassword := "secretgraph"
@@ -23,11 +23,11 @@ func NewDriver() *graphDB {
 	if err != nil {
 		panic(err)
 	}
-	return &graphDB{Driver: driver, DBname: "neo4j"}
+	return &GraphDB{Driver: driver, DBname: "neo4j"}
 }
 
 // setting Jsonから取得するようにしたい
-func SelectDriver(dbselect string) *graphDB {
+func SelectDriver(dbselect string) *GraphDB {
 	dbUri := "neo4j://localhost"
 	dbUser := "neo4j"
 	dbPassword := "password"
@@ -49,7 +49,7 @@ func SelectDriver(dbselect string) *graphDB {
 	if err != nil {
 		panic(err)
 	}
-	return &graphDB{Driver: driver, DBname: "neo4j"}
+	return &GraphDB{Driver: driver, DBname: "neo4j"}
 }
 
 // 複数のユーザーデータベースは作れないので全部消すしかないため用意

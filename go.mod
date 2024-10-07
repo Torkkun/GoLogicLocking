@@ -3,6 +3,7 @@ module goll
 go 1.21.2
 
 require (
+	github.com/deckarep/golang-set/v2 v2.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/neo4j/neo4j-go-driver/v5 v5.20.0 // indirect
 	github.com/spf13/cobra v1.8.0 // indirect

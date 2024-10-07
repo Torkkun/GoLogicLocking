@@ -1,4 +1,4 @@
-read -sv ltika2/ltika2.v
-hierarchy -top blink
+read -sv lutveri/luttest.v
+hierarchy -top lut
 proc; opt; techmap; opt
-write_verilog -noattr ltika2/ltika2_yoshnthd.v
+write_verilog -noattr lutveri/lut_yoshnthd.v
