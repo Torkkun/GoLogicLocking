@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"goll/graph"
 	"goll/graph/veryosys"
+	"goll/logiclocking/veryosysll"
 	"goll/parser/yosysjson"
 	"log"
 	"os"
@@ -196,6 +197,7 @@ func CellCreateTest(t *testing.T, conf *testYosys, ctx context.Context) (map[str
 	return tmpmap, nil
 }
 
+// DBへ全ノードの作成を行う
 func TestConnection(t *testing.T) {
 	conf := SetUp()
 	ctx := context.Background()
@@ -213,10 +215,6 @@ func TestConnection(t *testing.T) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
-
-	// テストとしてノード作成と分けて試す
-	// 現時点ではノード作成時に、接続ノードはすでにあるとみなしている
-	// 接続できているものもあればできていないのも見受けられるある
 	gcell, gconns := yosysjson.CellsConvertToStoreGraph(conf.module.Cells)
 	for _, v := range gcell {
 		fmt.Println(v)
@@ -287,4 +285,95 @@ func TestConnection(t *testing.T) {
 	} else {
 		log.Fatalln("Connection Create Faled")
 	}
+}
+
+// Connectionテストからテスト用項目を削減したもの
+func TestGraphSetup(t *testing.T) {
+	conf := SetUp()
+	ctx := context.Background()
+	defer conf.driver.Driver.Close(ctx)
+
+	tmpmap := make(map[int]*Mapv)
+	// テストのノード作成を行う
+	tmpmap, err := PortCreateTest(t, conf, ctx, tmpmap)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	tmpmap, err = NetCreateTest(t, conf, ctx, tmpmap)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	gcell, gconns := yosysjson.CellsConvertToStoreGraph(conf.module.Cells)
+
+	cellnodes := make(map[string]string) // K AttrSrc, V elementId
+	for _, cell := range gcell {
+		elementid, err := veryosys.CreateCellNode(ctx, conf.driver.Driver, conf.driver.DBname, cell)
+		if err != nil {
+			log.Fatalf("Create Cell Node Error: %v", err.Error())
+		}
+		cellnodes[cell.Attributes.Src] = elementid
+	}
+
+	for src, conn := range gconns {
+		elementid := cellnodes[src]
+		for _, v := range conn {
+			p := tmpmap[v.BitNum]
+			if v.Type == "input" {
+				err := veryosys.CellConnection(ctx, conf.driver.Driver, conf.driver.DBname, &veryosys.ConnectionPair{
+					Predecessor: veryosys.Node{
+						Type:      "Cell",
+						ElementId: elementid,
+					},
+					Successor: veryosys.Node{
+						Type:      p.Type,
+						ElementId: p.ElementId,
+					},
+				})
+				if err != nil {
+					log.Fatalf("Create Connection Node Error: %v", err.Error())
+				}
+			} else if v.Type == "output" {
+				// Netで作成したものとCellを接続する
+				err := veryosys.CellConnection(ctx, conf.driver.Driver, conf.driver.DBname, &veryosys.ConnectionPair{
+					Predecessor: veryosys.Node{
+						Type:      p.Type,
+						ElementId: p.ElementId,
+					},
+					Successor: veryosys.Node{
+						Type:      "Cell",
+						ElementId: elementid,
+					},
+				})
+				if err != nil {
+					log.Fatalf("Create Connection Node Error: %v", err.Error())
+				}
+			}
+		}
+	}
+}
+
+func TestRandomXorXnor(t *testing.T) {
+	conf := SetUp()
+	ctx := context.Background()
+
+	defer conf.driver.Driver.Close(ctx)
+
+	keys, err := veryosysll.RandomXorXnor(ctx, conf.driver.Driver, conf.driver.DBname, 2)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(keys)
+}
+
+func TestRandomXorXnorTxTest(t *testing.T) {
+	conf := SetUp()
+	ctx := context.Background()
+
+	defer conf.driver.Driver.Close(ctx)
+
+	keys, err := veryosysll.RandomXorXnorTxTest(ctx, conf.driver.Driver, conf.driver.DBname, 2)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(keys)
 }

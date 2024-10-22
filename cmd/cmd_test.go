@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"goll/graph"
 	"goll/graph/verpyverilog"
-	"goll/logiclocking"
+	logiclocking "goll/logiclocking/verpyverilogll"
 	"goll/parser"
 	"goll/parser/yosysjson"
 	"goll/utils"

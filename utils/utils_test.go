@@ -15,3 +15,8 @@ func TestSample(t *testing.T) {
 		fmt.Println(cht)
 	}
 }
+
+func TestRandomNumbers(t *testing.T) {
+	test := RandomNumbers(5, 3)
+	fmt.Println(test)
+}

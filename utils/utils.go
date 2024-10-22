@@ -71,6 +71,12 @@ func Sample[T any](in []T, size int) ([]T, error) {
 	return out, nil
 }
 
+func RandomNumbers(num, count int) []int {
+	numbers := rand.Perm(num)
+	result := numbers[:count]
+	return result
+}
+
 func WriteSpace() string {
 	return " "
 }

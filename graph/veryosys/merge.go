@@ -42,3 +42,27 @@ func CellConnection(ctx context.Context, driver neo4j.DriverWithContext, dbname 
 	}
 	return nil
 }
+
+func CellConnectionTx(tx neo4j.ExplicitTransaction, ctx context.Context, conn *ConnectionPair) error {
+	query := fmt.Sprintf(`
+		MATCH (pre:%s), (suc:%s)
+		WHERE elementId(pre)=$pre_element_id AND elementId(suc)=$suc_element_id
+		MERGE (pre)-[:%sto%s]->(suc)`,
+		conn.Predecessor.Type,
+		conn.Successor.Type,
+		conn.Predecessor.Type,
+		conn.Successor.Type,
+	)
+
+	_, err := tx.Run(ctx,
+		query,
+		map[string]any{
+			"pre_element_id": conn.Predecessor.ElementId,
+			"suc_element_id": conn.Successor.ElementId,
+		})
+	if err != nil {
+		err = fmt.Errorf("MERGE Cell Connection Error:%v", err)
+		return err
+	}
+	return nil
+}

@@ -1,4 +1,4 @@
 package veryosys
 
-type Relation struct {
+type DBRelation struct {
 }
