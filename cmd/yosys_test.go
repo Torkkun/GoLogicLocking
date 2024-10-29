@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"goll/circuit"
 	"goll/graph"
 	"goll/graph/veryosys"
 	"goll/logiclocking/veryosysll"
@@ -287,91 +288,23 @@ func TestConnection(t *testing.T) {
 	}
 }
 
-// Connectionテストからテスト用項目を削減したもの
-func TestGraphSetup(t *testing.T) {
-	conf := SetUp()
-	ctx := context.Background()
-	defer conf.driver.Driver.Close(ctx)
-
-	tmpmap := make(map[int]*Mapv)
-	// テストのノード作成を行う
-	tmpmap, err := PortCreateTest(t, conf, ctx, tmpmap)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	tmpmap, err = NetCreateTest(t, conf, ctx, tmpmap)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	gcell, gconns := yosysjson.CellsConvertToStoreGraph(conf.module.Cells)
-
-	cellnodes := make(map[string]string) // K AttrSrc, V elementId
-	for _, cell := range gcell {
-		elementid, err := veryosys.CreateCellNode(ctx, conf.driver.Driver, conf.driver.DBname, cell)
-		if err != nil {
-			log.Fatalf("Create Cell Node Error: %v", err.Error())
-		}
-		cellnodes[cell.Attributes.Src] = elementid
-	}
-
-	for src, conn := range gconns {
-		elementid := cellnodes[src]
-		for _, v := range conn {
-			p := tmpmap[v.BitNum]
-			if v.Type == "input" {
-				err := veryosys.CellConnection(ctx, conf.driver.Driver, conf.driver.DBname, &veryosys.ConnectionPair{
-					Predecessor: veryosys.Node{
-						Type:      "Cell",
-						ElementId: elementid,
-					},
-					Successor: veryosys.Node{
-						Type:      p.Type,
-						ElementId: p.ElementId,
-					},
-				})
-				if err != nil {
-					log.Fatalf("Create Connection Node Error: %v", err.Error())
-				}
-			} else if v.Type == "output" {
-				// Netで作成したものとCellを接続する
-				err := veryosys.CellConnection(ctx, conf.driver.Driver, conf.driver.DBname, &veryosys.ConnectionPair{
-					Predecessor: veryosys.Node{
-						Type:      p.Type,
-						ElementId: p.ElementId,
-					},
-					Successor: veryosys.Node{
-						Type:      "Cell",
-						ElementId: elementid,
-					},
-				})
-				if err != nil {
-					log.Fatalf("Create Connection Node Error: %v", err.Error())
-				}
-			}
-		}
-	}
-}
-
-func TestRandomXorXnor(t *testing.T) {
+func TestCreateGraph(t *testing.T) {
 	conf := SetUp()
 	ctx := context.Background()
 
 	defer conf.driver.Driver.Close(ctx)
-
-	keys, err := veryosysll.RandomXorXnor(ctx, conf.driver.Driver, conf.driver.DBname, 2)
-	if err != nil {
+	if err := circuit.TranslationCircuit(ctx, conf.driver.Driver, conf.driver.DBname, conf.module); err != nil {
 		log.Fatalln(err)
 	}
-	fmt.Println(keys)
 }
 
-func TestRandomXorXnorTxTest(t *testing.T) {
+func TestRandomXorXnorWrpTx(t *testing.T) {
 	conf := SetUp()
 	ctx := context.Background()
 
 	defer conf.driver.Driver.Close(ctx)
 
-	keys, err := veryosysll.RandomXorXnorTxTest(ctx, conf.driver.Driver, conf.driver.DBname, 2)
+	keys, err := veryosysll.RandomXorXnorWrpTxTest(ctx, conf.driver.Driver, conf.driver.DBname, 2)
 	if err != nil {
 		log.Fatalln(err)
 	}

@@ -47,7 +47,10 @@ func CreateInOutNodeTx(tx neo4j.ExplicitTransaction, ctx context.Context, port *
 		err = fmt.Errorf("CreateInOutNode Error:%v", err)
 		return "", err
 	}
-	record := result.Record()
+	record, err := result.Single(ctx)
+	if err != nil {
+		return "", err
+	}
 	resio, ok := record.Get("io")
 	if !ok {
 		err = fmt.Errorf("NotfoundCreated IO Node")
@@ -91,6 +94,32 @@ func CreateWireNode(ctx context.Context, driver neo4j.DriverWithContext, dbname 
 	return w.GetElementId(), nil
 }
 
+func CreateWireNodeTx(tx neo4j.ExplicitTransaction, ctx context.Context, netname *DBNetName) (string, error) {
+	result, err := tx.Run(ctx,
+		`CREATE (w:Wire {bitnum: $bitnum, netname: $netname, attrsrc: $attrsrc})
+			RETURN w`,
+		map[string]any{
+			"bitnum":  netname.BitNum,
+			"netname": netname.Netname,
+			"attrsrc": netname.Attributes.Src,
+		})
+	if err != nil {
+		err = fmt.Errorf("CreateNetWireNode Error:%v", err)
+		return "", err
+	}
+	record, err := result.Single(ctx)
+	if err != nil {
+		return "", err
+	}
+	resw, ok := record.Get("w")
+	if !ok {
+		err = fmt.Errorf("NotfoundCreated Wire Node")
+		return "", err
+	}
+	w := resw.(neo4j.Node)
+	return w.GetElementId(), nil
+}
+
 // GateLevel Node
 func CreateCellNode(ctx context.Context, driver neo4j.DriverWithContext, dbname string, cell *Cell) (string, error) {
 	result, err := neo4j.ExecuteQuery(ctx, driver,
@@ -118,6 +147,31 @@ func CreateCellNode(ctx context.Context, driver neo4j.DriverWithContext, dbname 
 	}
 	cellnode := newcell.(neo4j.Node)
 
+	return cellnode.GetElementId(), nil
+}
+
+func CreateCellNodeTx(tx neo4j.ExplicitTransaction, ctx context.Context, cell *Cell) (string, error) {
+	result, err := tx.Run(ctx,
+		`CREATE (cell:Cell {type: $type, attrsrc: $attrsrc})
+		RETURN cell`,
+		map[string]any{
+			"type":    cell.Type,
+			"attrsrc": cell.Attributes.Src,
+		}) //DBの選択 後で
+	if err != nil {
+		err = fmt.Errorf("CreateCellNode Error:%v", err)
+		return "", err
+	}
+	record, err := result.Single(ctx)
+	if err != nil {
+		return "", err
+	}
+	newcell, ok := record.Get("cell")
+	if !ok {
+		err = fmt.Errorf("GetCell Error")
+		return "", err
+	}
+	cellnode := newcell.(neo4j.Node)
 	return cellnode.GetElementId(), nil
 }
 
@@ -164,7 +218,10 @@ func CreateRandomLLGateNodeTx(tx neo4j.ExplicitTransaction, ctx context.Context,
 		err = fmt.Errorf("CreateLLCellNode Error:%v", err)
 		return "", err
 	}
-	record := result.Record()
+	record, err := result.Single(ctx)
+	if err != nil {
+		return "", err
+	}
 	llcell, ok := record.Get("llcell")
 	if !ok {
 		err = fmt.Errorf("GetCell Error")
