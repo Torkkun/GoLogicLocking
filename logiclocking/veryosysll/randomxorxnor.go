@@ -10,8 +10,9 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-func RandomXorXnorWrpTxTest(ctx context.Context, driver neo4j.DriverWithContext, dbname string, keylen int) (map[string]bool, error) {
-	pair, err := veryosys.GetRelationshipsAndPairNodes(ctx, driver, dbname)
+func RandomXorXnor(ctx context.Context, driver neo4j.DriverWithContext, dbname string, keylen int) (map[string]bool, error) {
+	types := []string{veryosys.CelltoIO, veryosys.WiretoCell}
+	pair, err := veryosys.GetRelationshipsAndPairNodesExcludeMultipleRelationshipTypes(ctx, driver, dbname, types)
 	if err != nil {
 		return nil, err
 	}
@@ -42,10 +43,12 @@ func RandomXorXnorWrpTxTest(ctx context.Context, driver neo4j.DriverWithContext,
 			} else {
 				gateType = "XOR"
 			}
+			// fanout
 			prenode := new(veryosys.Node)
 			prenode.ElementId = pair.Pre[indxnum].GetElementId()
 			prenode.Type = pair.Pre[indxnum].Labels[0]
 
+			// fanin
 			sucnode := new(veryosys.Node)
 			sucnode.ElementId = pair.Suc[indxnum].GetElementId()
 			sucnode.Type = pair.Suc[indxnum].Labels[0]

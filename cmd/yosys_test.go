@@ -304,9 +304,51 @@ func TestRandomXorXnorWrpTx(t *testing.T) {
 
 	defer conf.driver.Driver.Close(ctx)
 
-	keys, err := veryosysll.RandomXorXnorWrpTxTest(ctx, conf.driver.Driver, conf.driver.DBname, 2)
+	keys, err := veryosysll.RandomXorXnor(ctx, conf.driver.Driver, conf.driver.DBname, 2)
 	if err != nil {
 		log.Fatalln(err)
 	}
 	fmt.Println(keys)
+}
+
+func TestRndLUT(t *testing.T) {
+	conf := SetUp()
+	ctx := context.Background()
+
+	defer conf.driver.Driver.Close(ctx)
+	veryosysll.TMPRandomLUT(ctx, conf.driver.Driver, conf.driver.DBname, 1, 2)
+}
+
+func TestAssumption(t *testing.T) {
+	conf := SetUp()
+	ctx := context.Background()
+
+	defer conf.driver.Driver.Close(ctx)
+
+	numgates := 1
+	lutwidth := 2
+	veryosysll.TestAssumptionExec(ctx, conf.driver.Driver, conf.driver.DBname, numgates, lutwidth)
+}
+
+// テストのためのデータ取得だけのやつ
+func TestForDataGet(t *testing.T) {
+	conf := SetUp()
+	ctx := context.Background()
+
+	defer conf.driver.Driver.Close(ctx)
+
+	numgates := 1
+	//lutwidth := 2
+
+	types := []string{veryosys.IONode, veryosys.WireNode}
+	// potential gates
+	nodes, err := veryosys.GetNodes(ctx, conf.driver.Driver, conf.driver.DBname, types)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	if len(nodes) < numgates {
+		err = fmt.Errorf("ERROR:to much keylength, plese input less than %v", len(nodes))
+		log.Fatalln(err)
+	}
+	fmt.Println(nodes)
 }

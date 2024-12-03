@@ -1,11 +1,11 @@
 package veryosysll
 
-/*
 import (
 	"context"
 	"fmt"
 	"goll/graph/veryosys"
 	"goll/utils"
+	"math"
 	"slices"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
@@ -13,8 +13,7 @@ import (
 )
 
 // randomLogicLockingのロックゲート部分のみLUT化させる
-
-func RandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname string, numgates, lutwidth int) (map[string]bool, error) {
+func TMPRandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname string, numgates, lutwidth int) (map[string]bool, error) {
 	// num gates: ロックするゲートの数
 	// lut width: LUTの幅ロックされたゲートの最大のfaninを定義する
 
@@ -61,7 +60,8 @@ func RandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname strin
 	// lut用のMUXの設定を用意
 	muxwidth := 2 * lutwidth
 
-	key := make(map[string]bool)
+	// TODO: KEY USED
+	//key := make(map[string]bool)
 
 	// session 作成
 	session := driver.NewSession(ctx, neo4j.SessionConfig{DatabaseName: dbname})
@@ -72,10 +72,10 @@ func RandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname strin
 		for i, indxnum := range gates {
 			nodeID := nodes[indxnum].GetElementId()
 			// fanout
-			pre, err := veryosys.GetPredecessorNodes(ctx, driver, dbname, nodeID)
-			if err != nil {
-				return nil, err
-			}
+			//pre, err := veryosys.GetPredecessorNodes(ctx, driver, dbname, nodeID)
+			//if err != nil {
+			//	return nil, err
+			//}
 
 			// fanin
 			suc, err := veryosys.GetSuccessorNodes(ctx, driver, dbname, nodeID)
@@ -100,14 +100,14 @@ func RandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname strin
 					return nil, err
 				}
 			} else {
-				return nil, fmt.Errorf("Could not fing enough viable gates for padding")
+				return nil, fmt.Errorf("could not find enough viable gates for padding")
 			}
 
 			// create LUT
-			AddLUTNode(&Mux{
-				Name:  fmt.Sprintf("lut_%d", i),
-				Width: muxwidth,
-			})
+			lutid, err := AddLUTNode(tx, ctx, fmt.Sprintf("lut_%d", i), muxwidth)
+			if err != nil {
+				return nil, err
+			}
 
 			// connect keys
 			product := utils.ProductBool(len(suc.Nodes) - len(faninlist))
@@ -123,7 +123,7 @@ func RandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname strin
 			// assumptionsの作成
 			tmpfaninandpadding := append(faninlist, padding...)
 
-			for keylistsIndx, vs := range keylists {
+			for j, vs := range keylists {
 				assumptions := make(map[string]bool)
 				for idx, v := range slices.Backward(vs) {
 					if contains(faninlist, tmpfaninandpadding[idx]) {
@@ -132,7 +132,28 @@ func RandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname strin
 				}
 
 				// 動的キー生成
-				//keyIn := fmt.Sprintf("key_%d", keylistsIndx)
+				keyIn := fmt.Sprintf("key_%d", i*int(math.Pow(2, float64(lutwidth)))+j)
+
+				// いったん概念的なグラフ上のLUTに接続する?
+				newkeyid, err := veryosys.CreateInOutNodeTx(tx, ctx, &veryosys.Port{
+					Direction: "input",
+					Name:      keyIn,
+				})
+				if err != nil {
+					return nil, err
+				}
+				if err := veryosys.CellConnectionTx(tx, ctx, &veryosys.ConnectionPair{
+					Predecessor: veryosys.Node{
+						Type:      "LLLut",
+						ElementId: lutid,
+					},
+					Successor: veryosys.Node{
+						Type:      "IO",
+						ElementId: newkeyid,
+					},
+				}); err != nil {
+					return nil, err
+				}
 
 				// SATソルバ
 				//TODO
@@ -143,14 +164,18 @@ func RandomLUT(ctx context.Context, driver neo4j.DriverWithContext, dbname strin
 				//else
 				// key[keyIn] = result[gate]
 			}
-			//for i, x := range slices.Backward(keylists) {
-			//	assumptions[tmpfaninandpadding[i]] = x
-			//}
+			// TODO: 接続の変更
+			// 接続を削除
+			// 接続をコネクト
+			// 元のゲートを削除
 
 		}
 
 		return nil, nil
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	return nil, nil
 }
@@ -179,4 +204,3 @@ func contains(slice []string, item string) bool {
 	}
 	return false
 }
-*/

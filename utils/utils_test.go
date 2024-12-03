@@ -20,3 +20,14 @@ func TestRandomNumbers(t *testing.T) {
 	test := RandomNumbers(5, 3)
 	fmt.Println(test)
 }
+
+func TestProduct(t *testing.T) {
+	product := ProductBool(3)
+	for {
+		product := product()
+		if len(product) == 0 {
+			break
+		}
+		fmt.Println(product)
+	}
+}

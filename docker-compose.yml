@@ -1,6 +1,5 @@
 services:
   circutdb:
-    restart: always
     image: "neo4j:latest"
     ports: 
       - 7475:7474

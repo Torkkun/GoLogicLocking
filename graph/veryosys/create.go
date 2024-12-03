@@ -231,3 +231,37 @@ func CreateRandomLLGateNodeTx(tx neo4j.ExplicitTransaction, ctx context.Context,
 
 	return llcellnode.GetElementId(), nil
 }
+
+type LockLutNode struct {
+	GateType string
+	LockType string
+	Name     string
+}
+
+func CreateRandomLutGateNodeTx(tx neo4j.ExplicitTransaction, ctx context.Context, llnode *LockLutNode) (string, error) {
+	result, err := tx.Run(ctx,
+		`CREATE (llLut:LLLut {gatetype: $gate_type, locktype: $lock_type})
+		RETURN llLut`,
+		map[string]any{
+			"gate_type": llnode.GateType,
+			"lock_type": llnode.LockType,
+			"name":      llnode.Name,
+		},
+	)
+	if err != nil {
+		err = fmt.Errorf("CreateLLLutNode Error:%v", err)
+		return "", err
+	}
+	record, err := result.Single(ctx)
+	if err != nil {
+		return "", err
+	}
+	llcell, ok := record.Get("llLut")
+	if !ok {
+		err = fmt.Errorf("GetLut Error")
+		return "", err
+	}
+	lllutnode := llcell.(neo4j.Node)
+
+	return lllutnode.GetElementId(), nil
+}

@@ -112,8 +112,8 @@ func GetCellNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname st
 }
 
 type GetPreNodeAndRelation struct {
-	Node     []neo4j.Node
-	Relation []neo4j.Relationship
+	Nodes     []neo4j.Node
+	Relations []neo4j.Relationship
 }
 
 func GetPredecessorNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string, sucElementId string) (*GetPreNodeAndRelation, error) {
@@ -151,8 +151,53 @@ func GetPredecessorNodes(ctx context.Context, driver neo4j.DriverWithContext, db
 		relation = append(relation, r)
 	}
 	return &GetPreNodeAndRelation{
-		Node:     nodes,
-		Relation: relation,
+		Nodes:     nodes,
+		Relations: relation,
+	}, nil
+}
+
+type GetSucNodeAndRelation struct {
+	Nodes     []neo4j.Node
+	Relations []neo4j.Relationship
+}
+
+func GetSuccessorNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string, preElementId string) (*GetSucNodeAndRelation, error) {
+	result, err := neo4j.ExecuteQuery(ctx, driver, `
+	MATCH (pre)-[r]->(suc)
+	WHERE elementId(pre)=$pre_element_id
+	RETURN r, suc`,
+		map[string]any{
+			"pre_element_id": preElementId,
+		},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("MATCH SuccessorNode Error:%v", err)
+		return nil, err
+	}
+	var nodes []neo4j.Node
+	var relation []neo4j.Relationship
+	for _, record := range result.Records {
+		// convert to node
+		sucres, ok := record.Get("suc")
+		if !ok {
+			err = errors.New("get successor node record error")
+			return nil, err
+		}
+		sucnode := sucres.(neo4j.Node)
+		nodes = append(nodes, sucnode)
+		// convert to relationship
+		rres, ok := record.Get("r")
+		if !ok {
+			err = errors.New("get Relation Record Error")
+			return nil, err
+		}
+		r := rres.(neo4j.Relationship)
+		relation = append(relation, r)
+	}
+	return &GetSucNodeAndRelation{
+		Nodes:     nodes,
+		Relations: relation,
 	}, nil
 }
 
@@ -162,13 +207,23 @@ type GetRelationships struct {
 	Relation []neo4j.Relationship
 }
 
-// WiretoCellだけ条件に含めない
-func GetRelationshipsAndPairNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string) (*GetRelationships, error) {
-	// WiretoCellだけとりのぞく
-	result, err := neo4j.ExecuteQuery(ctx, driver, `
+// リレーションと対抗ノードを取得するが、複数のリレーションタイプを除去する
+func GetRelationshipsAndPairNodesExcludeMultipleRelationshipTypes(ctx context.Context, driver neo4j.DriverWithContext, dbname string, types []string) (*GetRelationships, error) {
+	var params string
+	for i, t := range types {
+		if i == 0 {
+			params = fmt.Sprintf("'%s'", t)
+			continue
+		} else {
+			tmpprms := fmt.Sprintf("'%s'", t)
+			params += ", " + tmpprms
+		}
+	}
+	query := fmt.Sprintf(`
 	MATCH (pre)-[r]->(suc)
-	WHERE NOT type(r) = 'WiretoCell'
-	RETURN pre, r, suc`,
+	WHERE NOT type(r) IN [%s]
+	RETURN pre, r, suc`, params)
+	result, err := neo4j.ExecuteQuery(ctx, driver, query,
 		map[string]any{},
 		neo4j.EagerResultTransformer,
 		neo4j.ExecuteQueryWithDatabase(dbname))
@@ -210,4 +265,41 @@ func GetRelationshipsAndPairNodes(ctx context.Context, driver neo4j.DriverWithCo
 		Suc:      sucnodes,
 		Relation: relation,
 	}, nil
+}
+
+// Get gates
+func GetNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string, types []string) ([]neo4j.Node, error) {
+	var params string
+	for i, t := range types {
+		if i == 0 {
+			params = fmt.Sprintf("n:%s", t)
+			continue
+		} else {
+			tmpprms := fmt.Sprintf("n:%s", t)
+			params += " OR " + tmpprms
+		}
+	}
+	query := fmt.Sprintf(`
+	MATCH (n)
+	WHERE NOT (%s)
+	RETURN n`, params)
+	result, err := neo4j.ExecuteQuery(ctx, driver, query,
+		map[string]any{},
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(dbname))
+	if err != nil {
+		err = fmt.Errorf("MATCH Node Error:%v", err)
+		return nil, err
+	}
+	var nodes []neo4j.Node
+	for _, record := range result.Records {
+		n, ok := record.Get("n")
+		if !ok {
+			err = errors.New("get node record error")
+			return nil, err
+		}
+		node := n.(neo4j.Node)
+		nodes = append(nodes, node)
+	}
+	return nodes, nil
 }

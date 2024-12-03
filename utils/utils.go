@@ -92,3 +92,29 @@ func WriteNewLine() string {
 func WriteSemiColon() string {
 	return ";"
 }
+
+func ProductBool(repeat int) func() []bool {
+	bools := []bool{false, true}
+	p := make([]bool, repeat)
+	x := make([]int, len(p))
+
+	return func() []bool {
+		p := p[:len(x)]
+		for i, xi := range x {
+			p[i] = bools[xi]
+		}
+		for i := len(x) - 1; i >= 0; i-- {
+			x[i]++
+			if x[i] < len(bools) {
+				break
+			}
+			x[i] = 0
+			if i <= 0 {
+				x = x[0:0]
+				break
+			}
+		}
+		return p
+	}
+
+}
