@@ -10,6 +10,7 @@ import (
 	"goll/graph/veryosys"
 	"goll/logiclocking/veryosysll"
 	"goll/parser/yosysjson"
+	"goll/sat"
 	"log"
 	"os"
 	"testing"
@@ -328,6 +329,26 @@ func TestAssumption(t *testing.T) {
 	numgates := 1
 	lutwidth := 2
 	veryosysll.TestAssumptionExec(ctx, conf.driver.Driver, conf.driver.DBname, numgates, lutwidth)
+}
+
+func TestCNF(t *testing.T) {
+	conf := SetUp()
+	ctx := context.Background()
+
+	defer conf.driver.Driver.Close(ctx)
+	types := []string{veryosys.IONode, veryosys.WireNode}
+	// potential gates
+	nodes, err := veryosys.GetNodes(ctx, conf.driver.Driver, conf.driver.DBname, types)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	f, _, err := sat.ConvertToCircuit(ctx, conf.driver.Driver, conf.driver.DBname, nodes)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(f.FromClouses)
+	fmt.Println(len(f.FromClouses))
 }
 
 // テストのためのデータ取得だけのやつ

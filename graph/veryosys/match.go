@@ -201,6 +201,13 @@ func GetSuccessorNodes(ctx context.Context, driver neo4j.DriverWithContext, dbna
 	}, nil
 }
 
+// ToDo
+// CellノードからCellノードを探すこの時Wireは無視してNextHopを検索する
+// 今のところ基本的には、２ホップ目には見つかるはず
+func GetSuccessorCellNodes(ctx context.Context, driver neo4j.DriverWithContext, dbname string, preElementId string) (*GetSucNodeAndRelation, error) {
+	return nil, nil
+}
+
 type GetRelationships struct {
 	Pre      []neo4j.Node
 	Suc      []neo4j.Node
